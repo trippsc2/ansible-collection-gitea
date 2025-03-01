@@ -1,0 +1,30 @@
+---
+- name: Configure UFW HTTP port
+  when:
+    - gitea_server_http_address != '127.0.0.1'
+  become: true
+  community.general.ufw:
+    rule: allow
+    port: "{{ gitea_server_http_port }}"
+    proto: tcp
+
+- name: Configure UFW redirect port
+  when:
+    - gitea_server_http_address != '127.0.0.1'
+    - gitea_server_protocol == 'https'
+    - gitea_server_redirect_other_port
+  become: true
+  community.general.ufw:
+    rule: allow
+    port: "{{ gitea_server_port_to_redirect }}"
+    proto: tcp
+
+- name: Configure UFW SSH port
+  when:
+    - gitea_server_ssh_enabled
+    - _gitea_server_ssh_port != 22
+  become: true
+  community.general.ufw:
+    rule: allow
+    port: "{{ _gitea_server_ssh_port }}"
+    proto: tcp

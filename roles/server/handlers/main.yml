@@ -1,0 +1,28 @@
+---
+- name: Reload systemd services
+  listen: _gitea_systemd_reload
+  become: true
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+
+- name: Stop Gitea service
+  listen: _gitea_stop_gitea
+  become: true
+  ansible.builtin.systemd_service:
+    name: gitea.service
+    state: stopped
+
+- name: Update Gitea symlink
+  listen: _gitea_update_symlink
+  become: true
+  ansible.builtin.file:
+    src: "{{ _gitea_version_path }}"
+    path: "{{ gitea_install_path }}"
+    state: link
+
+- name: Restart Gitea service
+  listen: _gitea_restart_gitea
+  become: true
+  ansible.builtin.systemd_service:
+    name: gitea.service
+    state: restarted

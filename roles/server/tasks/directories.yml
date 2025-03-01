@@ -1,0 +1,208 @@
+---
+- name: Create config directory
+  become: true
+  ansible.builtin.file:
+    path: "{{ gitea_config_directory_path }}"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    mode: '0750'
+    state: directory
+
+- name: Create working directory
+  become: true
+  ansible.builtin.file:
+    path: "{{ gitea_working_directory_path }}"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    mode: '0750'
+    state: directory
+
+- name: Create repository root directory
+  when:
+    - gitea_config_directory_path in gitea_repository_root_path or
+      gitea_working_directory_path in gitea_repository_root_path
+  become: true
+  ansible.builtin.file:
+    path: "{{ gitea_repository_root_path }}"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    mode: '0750'
+    state: directory
+
+- name: Create security secret key directory
+  when:
+    - gitea_config_directory_path in gitea_security_secret_key_path or
+      gitea_working_directory_path in gitea_security_secret_key_path
+  become: true
+  ansible.builtin.file:
+    path: "{{ gitea_security_secret_key_path | dirname }}"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    mode: '0750'
+    state: directory
+
+- name: Create security internal token directory
+  when:
+    - gitea_config_directory_path in gitea_security_internal_token_path or
+      gitea_working_directory_path in gitea_security_internal_token_path
+  become: true
+  ansible.builtin.file:
+    path: "{{ gitea_security_internal_token_path | dirname }}"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    mode: '0750'
+    state: directory
+
+- name: Create log root directory
+  when:
+    - gitea_config_directory_path in gitea_log_root_path or
+      gitea_working_directory_path in gitea_log_root_path
+  become: true
+  ansible.builtin.file:
+    path: "{{ gitea_log_root_path }}"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    mode: '0750'
+    state: directory
+
+- name: Create Gitea SSH trusted key directory
+  when:
+    - gitea_server_ssh_trusted_user_ca_keys is defined
+    - gitea_server_ssh_trusted_user_ca_keys_path is defined
+    - gitea_working_directory_path in gitea_server_ssh_trusted_user_ca_keys_path or
+      gitea_config_directory_path in gitea_server_ssh_trusted_user_ca_keys_path
+  become: true
+  ansible.builtin.file:
+    path: "{{ gitea_server_ssh_trusted_user_ca_keys_path | dirname }}"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    mode: '0750'
+    state: directory
+
+- name: Create Gitea SSL certificate directory
+  when:
+    - gitea_server_protocol == 'https'
+    - gitea_server_cert_file_path is defined
+    - gitea_working_directory_path in gitea_server_cert_file_path or
+      gitea_config_directory_path in gitea_server_cert_file_path
+  become: true
+  ansible.builtin.file:
+    path: "{{ gitea_server_cert_file_path | dirname }}"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    mode: '0750'
+    state: directory
+
+- name: Create Gitea SSL key directory
+  when:
+    - gitea_server_protocol == 'https'
+    - gitea_server_key_file_path is defined
+    - gitea_working_directory_path in gitea_server_key_file_path or
+      gitea_config_directory_path in gitea_server_key_file_path
+  become: true
+  ansible.builtin.file:
+    path: "{{ gitea_server_key_file_path | dirname }}"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    mode: '0750'
+    state: directory
+
+- name: Create Gitea SSL ACME directory
+  when:
+    - gitea_server_protocol == 'https'
+    - gitea_server_acme_enabled
+    - gitea_server_acme_directory_path is defined
+    - gitea_working_directory_path in gitea_server_acme_directory_path or
+      gitea_config_directory_path in gitea_server_acme_directory_path
+  become: true
+  ansible.builtin.file:
+    path: "{{ gitea_server_acme_directory_path }}"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    mode: '0750'
+    state: directory
+
+- name: Create Gitea PProf directory
+  when:
+    - gitea_server_pprof_enabled
+    - gitea_server_pprof_directory_path is defined
+    - gitea_working_directory_path in gitea_server_pprof_directory_path or
+      gitea_config_directory_path in gitea_server_pprof_directory_path
+  become: true
+  ansible.builtin.file:
+    path: "{{ gitea_server_pprof_directory_path }}"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    mode: '0750'
+    state: directory
+
+- name: Create Gitea LFS content directory
+  when:
+    - gitea_server_lfs_enabled
+    - gitea_server_lfs_content_path is defined
+    - gitea_working_directory_path in gitea_server_lfs_content_path or
+      gitea_config_directory_path in gitea_server_lfs_content_path
+  become: true
+  ansible.builtin.file:
+    path: "{{ gitea_server_lfs_content_path }}"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    mode: '0750'
+    state: directory
+
+- name: Create Gitea LFS JWT secret path
+  when:
+    - gitea_server_lfs_enabled
+    - gitea_server_lfs_jwt_secret_path is defined
+    - gitea_working_directory_path in gitea_server_lfs_jwt_secret_path or
+      gitea_config_directory_path in gitea_server_lfs_jwt_secret_path
+  become: true
+  ansible.builtin.file:
+    path: "{{ gitea_server_lfs_jwt_secret_path | dirname }}"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    mode: '0750'
+    state: directory
+
+- name: Create Gitea SQLite directory
+  when:
+    - gitea_database_type == 'sqlite3'
+    - gitea_database_path is defined
+    - gitea_working_directory_path in gitea_database_path or
+      gitea_config_directory_path in gitea_database_path
+  become: true
+  ansible.builtin.file:
+    path: "{{ gitea_database_path | dirname }}"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    mode: '0750'
+    state: directory
+
+- name: Create Gitea Issue Indexer directory
+  when:
+    - gitea_indexer_issue_type == 'bleve' or
+      gitea_indexer_issue_type == 'elasticsearch'
+    - gitea_indexer_issue_path is defined
+    - gitea_working_directory_path in gitea_indexer_issue_path or
+      gitea_config_directory_path in gitea_indexer_issue_path
+  become: true
+  ansible.builtin.file:
+    path: "{{ gitea_indexer_issue_path | dirname }}"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    mode: '0750'
+    state: directory
+
+- name: Create Gitea Repo Indexer directory
+  when:
+    - gitea_indexer_repo_enabled
+    - gitea_indexer_repo_path is defined
+    - gitea_working_directory_path in gitea_indexer_repo_path or
+      gitea_config_directory_path in gitea_indexer_repo_path
+  become: true
+  ansible.builtin.file:
+    path: "{{ gitea_indexer_repo_path | dirname }}"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    mode: '0750'
+    state: directory

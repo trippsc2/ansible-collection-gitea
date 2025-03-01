@@ -1,0 +1,771 @@
+---
+gitea_configure_firewall: true
+
+gitea_user: git
+gitea_group: git
+gitea_user_home: "{{ gitea_working_directory_path }}"
+
+gitea_install_path: /usr/local/bin/gitea
+
+gitea_config_directory_path: /etc/gitea
+gitea_config_file_path: "{{ gitea_config_directory_path }}/app.ini"
+
+gitea_working_directory_path: /var/lib/gitea
+
+gitea_server_app_data_path: "{{ gitea_working_directory_path }}/data"
+
+gitea_repository_upload_temp_path: "{{ gitea_server_app_data_path }}/tmp/uploads"
+
+gitea_app_name: Gitea
+
+gitea_extra_config: ''
+
+gitea_repository_root_path: "{{ gitea_working_directory_path }}/gitea-repositories"
+gitea_repository_script_type: bash
+
+gitea_repository_force_private: false
+gitea_repository_default_private: last
+gitea_repository_default_push_create_private: true
+gitea_repository_max_creation_limit: -1
+
+gitea_repository_preferred_licenses:
+  - Apache License 2.0
+  - MIT License
+
+gitea_repository_http_git_enabled: true
+gitea_repository_use_compat_ssh_uri: false
+gitea_repository_go_get_clone_url_protocol: https
+gitea_repository_default_close_issues_via_commits_in_any_branch: false
+gitea_repository_push_create_user_enabled: false
+gitea_repository_push_create_org_enabled: false
+
+gitea_repository_default_units:
+  - repo.actions
+  - repo.code
+  - repo.issues
+  - repo.packages
+  - repo.projects
+  - repo.pulls
+  - repo.releases
+  - repo.wiki
+
+gitea_repository_default_fork_units:
+  - repo.code
+  - repo.pulls
+
+gitea_repository_default_mirror_units:
+  - repo.code
+  - repo.issues
+  - repo.packages
+  - repo.projects
+  - repo.releases
+  - repo.wiki
+
+gitea_repository_default_template_units:
+  - repo.code
+  - repo.issues
+  - repo.packages
+  - repo.projects
+  - repo.pulls
+  - repo.releases
+  - repo.wiki
+
+gitea_repository_prefix_archive_files: true
+gitea_repository_migrations_enabled: true
+gitea_repository_stars_enabled: true
+gitea_repository_default_branch: main
+gitea_repository_allow_adoption_of_unadopted: false
+gitea_repository_allow_deletion_of_unadopted: false
+gitea_repository_download_source_archives_enabled: true
+gitea_repository_allow_fork_without_maximum_limit: true
+gitea_repository_allow_fork_into_same_owner: false
+
+gitea_repository_extra_config: ''
+
+gitea_repository_editor_line_wrap_extensions:
+  - .txt
+  - .md
+  - .markdown
+  - .mdown
+  - .mkd
+  - .livemd
+
+gitea_repository_editor_previewable_file_modes:
+  - markdown
+
+gitea_repository_editor_extra_config: ''
+
+gitea_repository_pull_request_work_in_progress_prefixes:
+  - 'WIP:'
+  - '[WIP]'
+
+gitea_repository_pull_request_close_keywords:
+  - close
+  - closes
+  - closed
+  - fix
+  - fixes
+  - fixed
+  - resolve
+  - resolves
+  - resolved
+
+gitea_repository_pull_request_reopen_keywords:
+  - reopen
+  - reopens
+  - reopened
+
+gitea_repository_pull_request_default_merge_style: merge
+gitea_repository_pull_request_default_merge_message_commits_limit: 50
+gitea_repository_pull_request_default_merge_message_size: 5120
+gitea_repository_pull_request_populate_squash_comment_with_commit_message: false
+gitea_repository_pull_request_default_merge_message_all_authors: false
+gitea_repository_pull_request_default_merge_message_max_approvers: 10
+gitea_repository_pull_request_default_merge_message_official_approvers_only: true
+gitea_repository_pull_request_add_co_committer_trailers: true
+gitea_repository_pull_request_test_conflicting_patches_with_git_apply: false
+gitea_repository_pull_request_retarget_children_on_merge: true
+
+gitea_repository_pull_request_extra_config: ''
+
+gitea_repository_issue_lock_reasons:
+  - Too heated
+  - Off-topic
+  - Resolved
+  - Spam
+
+gitea_repository_issue_max_pinned: 3
+
+gitea_repository_issue_extra_config: ''
+
+gitea_repository_upload_enabled: true
+gitea_repository_upload_file_max_size: 50
+gitea_repository_upload_max_files: 5
+
+gitea_repository_upload_extra_config: ''
+
+gitea_repository_release_default_paging_number: 10
+
+gitea_repository_release_extra_config: ''
+
+gitea_repository_signing_enabled: false
+
+gitea_repository_signing_key: default
+gitea_repository_signing_initial_commit_always: true
+gitea_repository_signing_initial_commit_never: false
+gitea_repository_signing_default_trust_model: collaborator
+gitea_repository_signing_wiki_always: false
+gitea_repository_signing_wiki_never: true
+gitea_repository_signing_crud_actions_always: false
+gitea_repository_signing_crud_actions_never: false
+
+gitea_repository_signing_crud_actions:
+  - parentsigned
+  - pubkey
+  - twofa
+
+gitea_repository_signing_merges_always: false
+gitea_repository_signing_merges_never: false
+
+gitea_repository_signing_merges:
+  - basesigned
+  - commitssigned
+  - pubkey
+  - twofa
+
+gitea_repository_signing_extra_config: ''
+
+gitea_repository_local_copy_path: "{{ gitea_working_directory_path }}/tmp/local-repo"
+
+gitea_repository_local_extra_config: ''
+
+gitea_repository_mimetype_mappings: {}
+
+gitea_cors_enabled: false
+
+gitea_cors_allow_domains:
+  - '*'
+
+gitea_cors_methods:
+  - DELETE
+  - GET
+  - HEAD
+  - PATCH
+  - POST
+  - PUT
+  - OPTIONS
+
+gitea_cors_max_age: 10m
+gitea_cors_allow_credentials: false
+
+gitea_cors_headers:
+  - Content-Type
+  - User-Agent
+
+gitea_cors_x_frame_options: SAMEORIGIN
+
+gitea_cors_extra_config: ''
+
+gitea_ui_explore_paging_number: 20
+gitea_ui_issue_paging_number: 20
+gitea_ui_members_paging_number: 20
+gitea_ui_feed_max_commit_number: 5
+gitea_ui_feed_paging_number: 20
+gitea_ui_sitemap_paging_number: 20
+gitea_ui_graph_max_commit_number: 100
+gitea_ui_code_comment_lines: 4
+gitea_ui_default_theme: gitea-auto
+gitea_ui_show_user_email: true
+gitea_ui_max_display_file_size: 8388608
+gitea_ui_ambiguous_unicode_detection: true
+gitea_ui_reaction_max_user_number: 10
+
+gitea_ui_custom_emojis:
+  - codeberg
+  - git
+  - gitea
+  - github
+  - gitlab
+  - gogs
+
+gitea_ui_default_show_full_name: false
+gitea_ui_search_repo_description: true
+gitea_ui_only_show_relevant_repos: false
+gitea_ui_explore_paging_default_sort: recentupdate
+gitea_ui_preferred_timestamp_tense: mixed
+
+gitea_ui_extra_config: ''
+
+gitea_ui_admin_user_paging_number: 50
+gitea_ui_admin_repo_paging_number: 50
+gitea_ui_admin_notice_paging_number: 25
+gitea_ui_admin_org_paging_number: 50
+
+gitea_ui_admin_extra_config: ''
+
+gitea_ui_user_repo_paging_number: 15
+gitea_ui_user_org_paging_number: 15
+
+gitea_ui_user_extra_config: ''
+
+gitea_ui_meta_author: Gitea
+gitea_ui_meta_description: Gitea (Git with a cup of tea) is a painless self-hosted Git service written in Go
+
+gitea_ui_meta_keywords:
+  - git
+  - gitea
+  - go
+  - self-hosted
+
+gitea_ui_meta_extra_config: ''
+
+gitea_ui_notification_min_timeout: 10s
+gitea_ui_notification_max_timeout: 60s
+gitea_ui_notification_timeout_step: 10s
+gitea_ui_notification_event_source_update_time: 10s
+
+gitea_ui_notification_extra_config: ''
+
+gitea_ui_svg_render_enabled: true
+
+gitea_ui_svg_extra_config: ''
+
+gitea_ui_csv_max_file_size: 524288
+gitea_ui_csv_max_rows: 2500
+
+gitea_ui_csv_extra_config: ''
+
+gitea_markdown_enable_hard_line_break_in_comments: true
+gitea_markdown_enable_hard_line_break_in_documents: false
+
+gitea_markdown_file_extensions:
+  - .md
+  - .markdown
+  - .mdown
+  - .mkd
+  - .livemd
+
+gitea_markdown_math_enabled: true
+
+gitea_markdown_extra_config: ''
+
+gitea_server_protocol: http
+gitea_server_use_proxy_protocol: false
+gitea_server_proxy_protocol_tls_bridging: false
+gitea_server_proxy_protocol_header_timeout: 5s
+gitea_server_proxy_protocol_accept_unknown: false
+
+gitea_server_domain: "{{ 'localhost' if gitea_server_http_address == '127.0.0.1' else ansible_fqdn }}"
+
+gitea_server_http_address: '0.0.0.0'
+gitea_server_http_port: 3000
+gitea_server_unix_socket_permission: '666'
+gitea_server_local_use_proxy_protocol: "{{ gitea_server_use_proxy_protocol }}"
+gitea_server_per_write_timeout: 30s
+gitea_server_per_write_per_kb_timeout: 10s
+gitea_server_ssh_enabled: true
+gitea_server_start_ssh_server: false
+gitea_server_ssh_server_use_proxy_protocol: false
+gitea_server_builtin_ssh_server_user: "{{ gitea_user }}"
+gitea_server_ssh_listen_host: '0.0.0.0'
+gitea_server_ssh_listen_port: 2222
+gitea_server_ssh_root_path: ~/.ssh
+
+gitea_server_ssh_ciphers:
+  - chacha20-poly1306@openssh.com
+  - aes128-ctr
+  - aes192-ctr
+  - aes256-ctr
+  - aes128-gcm@openssh.com
+  - aes256-gcm@openssh.com
+
+gitea_server_ssh_key_exchanges:
+  - curve25519-sha256
+  - ecdh-sha2-nistp256
+  - ecdh-sha2-nistp384
+  - ecdh-sha2-nistp521
+  - diffie-hellman-group14-sha256
+  - diffie-hellman-group14-sha1
+
+gitea_server_ssh_macs:
+  - hmac-sha2-256-etm@openssh.com
+  - hmac-sha2-256
+  - hmac-sha1
+
+gitea_server_ssh_host_keys:
+  - "{{ gitea_server_app_data_path }}/ssh/gitea.rsa"
+  - "{{ gitea_server_app_data_path }}/ssh/gogs.rsa"
+
+gitea_server_ssh_create_authorized_keys_file: true
+gitea_server_ssh_domain: "{{ ansible_fqdn }}"
+gitea_server_ssh_authorized_keys_backup: false
+gitea_server_ssh_trusted_user_ca_keys_path: "{{ gitea_working_directory_path }}/.ssh/gitea-trusted-user-ca-keys.pem"
+gitea_server_ssh_authorized_principals_allow_anything: false
+gitea_server_ssh_authorized_principals_allow_off: false
+
+gitea_server_ssh_authorized_principals_allow:
+  - email
+  - username
+
+gitea_server_ssh_create_authorized_principals_file: "{{ not gitea_server_ssh_authorized_principals_allow_off }}"
+gitea_server_ssh_key_test_path: /tmp
+gitea_server_ssh_expose_anonymous: false
+gitea_server_ssh_per_write_timeout: 30s
+gitea_server_ssh_per_write_per_kb_timeout: 10s
+gitea_server_offline_mode: true
+gitea_server_cert_file_path: "{{ gitea_working_directory_path }}/https/cert.pem"
+gitea_server_key_file_path: "{{ gitea_working_directory_path }}/https/key.pem"
+gitea_server_redirect_other_port: false
+gitea_server_redirector_use_proxy_protocol: false
+gitea_server_port_to_redirect: 80
+gitea_server_ssl_min_version: TLSv1.2
+
+gitea_server_ssl_curve_preferences:
+  - X25519
+  - P256
+
+gitea_server_ssl_cipher_suites:
+  - ecdhe_ecdsa_with_aes_256_gcm_sha384
+  - ecdhe_rsa_with_aes_256_gcm_sha384
+  - ecdhe_ecdsa_with_aes_128_gcm_sha256
+  - ecdhe_rsa_with_aes_128_gcm_sha256
+  - ecdhe_ecdsa_with_chacha20_poly1305
+  - ecdhe_rsa_with_chacha20_poly1305
+
+gitea_server_acme_enabled: false
+gitea_server_acme_accept_tos: false
+gitea_server_acme_directory: "{{ gitea_working_directory_path }}/https"
+gitea_server_static_cache_time: 6h
+gitea_server_gzip_enabled: false
+gitea_server_pprof_enabled: false
+gitea_server_pprof_data_path: "{{ gitea_working_directory_path }}/data/pprof"
+gitea_server_landing_page: home
+gitea_server_lfs_enabled: false
+gitea_server_lfs_allow_pure_ssh: false
+gitea_server_lfs_content_path: "{{ gitea_server_app_data_path }}/lfs"
+gitea_server_lfs_jwt_secret_path: "{{ gitea_config_directory_path }}/lfs_jwt_secret"
+gitea_server_lfs_http_auth_expiry: 24h
+gitea_server_lfs_max_file_size: 0
+gitea_server_lfs_locks_paging_number: 50
+gitea_server_lfs_max_batch_size: 0
+gitea_server_allow_graceful_restarts: true
+gitea_server_graceful_hammer_time: 60s
+gitea_server_startup_timeout: '0'
+
+gitea_server_extra_config: ''
+
+gitea_database_type: sqlite3
+gitea_database_iterate_buffer_size: 50
+gitea_database_log_sql_queries: false
+gitea_database_retries: 10
+gitea_database_retry_backoff: 3s
+gitea_database_max_open_connections: 0
+gitea_database_max_idle_connections: 2
+gitea_database_auto_migration: true
+gitea_database_slow_query_threshold: 5s
+gitea_database_sqlite_path: "{{ gitea_working_directory_path }}/data/gitea.db"
+gitea_database_sqlite_timeout: 500
+gitea_database_name: gitea
+gitea_database_user: root
+
+gitea_database_extra_config: ''
+
+gitea_indexer_issue_type: bleve
+gitea_indexer_issue_name: gitea_issues
+gitea_indexer_issue_path: "{{ gitea_working_directory_path }}/indexers/issues.bleve"
+gitea_indexer_repo_enabled: false
+
+gitea_indexer_repo_unit_types:
+  - forks
+  - mirrors
+  - sources
+  - templates
+
+gitea_indexer_repo_type: bleve
+gitea_indexer_repo_path: "{{ gitea_working_directory_path }}/indexers/repos.bleve"
+gitea_indexer_repo_exclude_vendored: true
+gitea_indexer_repo_name: gitea_codes
+gitea_indexer_max_file_size: 1048576
+gitea_indexer_startup_timeout: 30s
+
+gitea_indexer_extra_config: ''
+
+gitea_security_secret_key_path: "{{ gitea_config_directory_path }}/secret_key"
+gitea_security_login_remember_days: 31
+gitea_security_cookie_remember_name: gitea_incredible
+gitea_security_reverse_proxy_authentication_user: X-WEBAUTH-USER
+gitea_security_reverse_proxy_authentication_email: X-WEBAUTH-EMAIL
+gitea_security_reverse_proxy_authentication_full_name: X-WEBAUTH-FULLNAME
+gitea_security_reverse_proxy_limit: 1
+
+gitea_security_reverse_proxy_trusted_proxies:
+  - 127.0.0.0/8
+  - ::1/128
+
+gitea_security_git_hooks_enabled: false
+gitea_security_webhooks_enabled: true
+gitea_security_only_allow_push_if_gitea_environment_set: true
+gitea_security_import_local_paths: false
+gitea_security_internal_token_path: "{{ gitea_config_directory_path }}/internal_token"
+gitea_security_password_hash_algorithm: pbkdf2
+gitea_security_csrf_cookie_http_only: true
+gitea_security_min_password_length: 8
+gitea_security_password_complexity_off: false
+
+gitea_security_password_complexity:
+  - digit
+  - lower
+  - spec
+  - upper
+
+gitea_security_password_check_pwn: false
+gitea_security_successful_tokens_cache_size: 20
+gitea_security_query_auth_token_enabled: false
+
+gitea_security_extra_config: ''
+
+gitea_camo_enabled: false
+gitea_camo_always: false
+
+gitea_camo_extra_config: ''
+
+gitea_openid_signin_enabled: true
+gitea_openid_signup_enabled: "{{ gitea_service_registration_enabled }}"
+
+gitea_openid_extra_config: ''
+
+gitea_oauth2_client_username: nickname
+gitea_oauth2_client_update_avatar: false
+gitea_oauth2_client_account_linking: login
+gitea_oauth2_client_confirm_register_email: "{{ gitea_service_register_email_confirm }}"
+gitea_oauth2_client_auto_registration_enabled: false
+
+gitea_oauth2_client_extra_config: ''
+
+gitea_service_reset_password_code_live_minutes: 180
+gitea_service_require_signin_view: false
+gitea_service_notify_mail_enabled: false
+gitea_service_basic_authentication_enabled: true
+gitea_service_password_signin_form_enabled: true
+gitea_service_reverse_proxy_authentication_enabled: false
+gitea_service_reverse_proxy_api_authentication_enabled: false
+gitea_service_default_keep_email_private: false
+gitea_service_default_allow_create_organization: true
+gitea_service_default_user_is_restricted: false
+gitea_service_default_enable_dependencies: true
+gitea_service_allow_cross_repository_dependencies: true
+gitea_service_user_heatmap_enabled: true
+gitea_service_show_milestones_dashboard_page: true
+gitea_service_auto_watch_new_repos: true
+gitea_service_auto_watch_on_changes: true
+gitea_service_default_user_visibility: public
+
+gitea_service_allowed_user_visibility_modes:
+  - limited
+  - private
+  - public
+
+gitea_service_default_org_visibility: public
+gitea_service_default_org_member_visible: false
+gitea_service_no_reply_address: "noreply.{{ gitea_server_domain }}"
+gitea_service_user_delete_with_comments_max_time: '0'
+
+gitea_service_valid_site_url_schemes:
+  - http
+  - https
+
+gitea_service_registration_enabled: true
+gitea_service_show_registration_button: true
+gitea_service_register_email_confirm: false
+gitea_service_register_manual_confirm: false
+gitea_service_active_code_live_minutes: 180
+gitea_service_allow_internal_registration: true
+gitea_service_allow_external_registration: true
+gitea_service_require_external_registration_password: false
+gitea_service_reverse_proxy_auto_registration_enabled: false
+gitea_service_reverse_proxy_email_enabled: false
+gitea_service_reverse_proxy_full_name_enabled: false
+gitea_service_captcha_enabled: false
+gitea_service_require_captcha_for_login: false
+gitea_service_require_external_registration_captcha: false
+gitea_service_captcha_type: image
+gitea_service_timetracking_enabled: true
+gitea_service_default_enable_timetracking: true
+gitea_service_default_allow_only_contributors_to_track_time: true
+
+gitea_service_extra_config: ''
+
+gitea_service_explore_require_signin_view: false
+gitea_service_explore_users_page_enabled: true
+gitea_service_explore_organizations_page_enabled: true
+gitea_service_explore_code_page_enabled: true
+
+gitea_service_explore_extra_config: ''
+
+gitea_ssh_ed25519_enabled: true
+gitea_ssh_minimum_key_sizes_ed25519: 256
+gitea_ssh_ecdsa_enabled: true
+gitea_ssh_minimum_key_sizes_ecdsa: 256
+gitea_ssh_rsa_enabled: true
+gitea_ssh_minimum_key_sizes_rsa: 3071
+gitea_ssh_dsa_enabled: false
+gitea_ssh_minimum_key_sizes_dsa: 1024
+
+gitea_ssh_minimum_key_sizes_extra_config: ''
+
+gitea_webhook_queue_length: 1000
+gitea_webhook_deliver_timeout: 5
+
+gitea_webhook_allowed_host_list:
+  - external
+
+gitea_webhook_skip_tls_verify: false
+gitea_webhook_paging_number: 10
+
+gitea_webhook_extra_config: ''
+
+gitea_mailer_enabled: false
+gitea_mailer_from_display_name_format: "{{ '{{ .DisplayName }}' }}"
+gitea_mailer_send_as_plain_text: false
+gitea_mailer_enable_helo: true
+gitea_mailer_sendmail_timeout: 5m
+gitea_mailer_sendmail_convert_crlf: true
+
+gitea_mailer_extra_config: ''
+
+gitea_email_incoming_enabled: false
+gitea_email_incoming_use_tls: false
+gitea_email_incoming_skip_tls_verify: false
+gitea_email_incoming_mailbox: INBOX
+gitea_email_incoming_delete_handled_message: true
+gitea_email_incoming_maximum_message_size: 10485760
+
+gitea_email_incoming_extra_config: ''
+
+gitea_cache_interval: 60
+gitea_cache_item_ttl: 16h
+gitea_cache_adapter: memory
+
+gitea_cache_extra_config: ''
+
+gitea_cache_last_commit_item_ttl: 8760h
+gitea_cache_last_commit_commits_count: 1000
+
+gitea_cache_last_commit_extra_config: ''
+
+gitea_session_provider: memory
+gitea_session_cookie_secure: true
+gitea_session_cookie_name: i_like_gitea
+gitea_session_gc_interval_time: 86400
+gitea_session_lifetime: 86400
+gitea_session_same_site: lax
+
+gitea_session_extra_config: ''
+
+gitea_picture_gravatar_source: gravatar
+
+gitea_picture_extra_config: ''
+
+gitea_log_root_path: "{{ gitea_working_directory_path }}/log"
+gitea_log_to_console: true
+gitea_log_to_file: false
+gitea_log_level: Info
+gitea_log_stacktrace_level: None
+gitea_log_ssh_enabled: false
+
+gitea_log_extra_config: ''
+
+gitea_git_home_path: "{{ gitea_server_app_data_path }}/home"
+gitea_git_diff_highlight_enabled: true
+gitea_git_max_diff_lines: 1000
+gitea_git_max_diff_line_characters: 5000
+gitea_git_max_diff_files: 100
+gitea_git_commits_range_size: 50
+gitea_git_branches_range_size: 20
+gitea_git_auto_git_wire_protocol_enabled: true
+gitea_git_pull_request_push_message: true
+gitea_git_verbose_push: true
+gitea_git_verbose_push_delay: 5s
+gitea_git_large_object_threshold: 1048576
+gitea_git_core_protect_ntfs_enabled: true
+gitea_git_partial_clone_enabled: true
+
+gitea_git_extra_config: ''
+
+gitea_git_timeout_default: 360
+gitea_git_timeout_migrate: 600
+gitea_git_timeout_mirror: 300
+gitea_git_timeout_clone: 300
+gitea_git_timeout_pull: 300
+gitea_git_timeout_gc: 60
+
+gitea_git_timeout_extra_config: ''
+
+gitea_metrics_enabled: false
+gitea_metrics_enabled_issue_by_label: false
+gitea_metrics_enabled_issue_by_repository: false
+
+gitea_metrics_extra_config: ''
+
+gitea_api_swagger_enabled: true
+gitea_api_max_response_items: 50
+gitea_api_default_paging_number: 30
+gitea_api_default_git_trees_per_page: 1000
+gitea_api_default_max_blob_size: 10485760
+
+gitea_api_extra_config: ''
+
+gitea_oauth2_enabled: true
+gitea_oauth2_access_token_expiration_time: 3600
+gitea_oauth2_refresh_token_expiration_time: 730
+gitea_oauth2_invalidate_refresh_tokens: false
+gitea_oauth2_jwt_signing_algorithm: RS256
+gitea_oauth2_jwt_secret_path: "{{ gitea_config_directory_path }}/oauth2_jwt_secret"
+gitea_oauth2_jwt_signing_private_key_file_path: "{{ gitea_server_app_data_path }}/jwt/private.pem"
+gitea_oauth2_max_token_length: 32767
+
+gitea_oauth2_default_applications:
+  - git-credential-oauth
+  - git-credential-manager
+  - tea
+
+gitea_oauth2_extra_config: ''
+
+gitea_time_default_ui_location: America/New_York
+
+gitea_time_extra_config: ''
+
+gitea_migrations_max_attempts: 3
+gitea_migrations_retry_backoff: 3
+gitea_migrations_allow_local_networks: false
+gitea_migrations_skip_tls_verify: false
+
+gitea_migrations_extra_config: ''
+
+gitea_federation_enabled: false
+gitea_federation_share_user_statistics: true
+gitea_federation_max_size: 4
+
+gitea_federation_algorithms:
+  - rsa-sha256
+  - rsa-sha512
+  - ed25519
+
+gitea_federation_digest_algorithm: SHA-256
+
+gitea_federation_get_headers:
+  - (request-target)
+  - Date
+
+gitea_federation_post_headers:
+  - (request-target)
+  - Date
+  - Digest
+
+gitea_federation_extra_config: ''
+
+gitea_packages_enabled: true
+gitea_packages_chunked_upload_path: "{{ gitea_server_app_data_path }}/tmp/package-upload"
+gitea_packages_limit_total_owner_count: -1
+gitea_packages_limit_total_owner_size: -1
+gitea_packages_limit_size_alpine: -1
+gitea_packages_limit_size_cargo: -1
+gitea_packages_limit_size_chef: -1
+gitea_packages_limit_size_composer: -1
+gitea_packages_limit_size_conan: -1
+gitea_packages_limit_size_conda: -1
+gitea_packages_limit_size_container: -1
+gitea_packages_limit_size_cran: -1
+gitea_packages_limit_size_debian: -1
+gitea_packages_limit_size_generic: -1
+gitea_packages_limit_size_go: -1
+gitea_packages_limit_size_helm: -1
+gitea_packages_limit_size_maven: -1
+gitea_packages_limit_size_npm: -1
+gitea_packages_limit_size_nuget: -1
+gitea_packages_limit_size_pub: -1
+gitea_packages_limit_size_pypi: -1
+gitea_packages_limit_size_rpm: -1
+gitea_packages_limit_size_rubygems: -1
+gitea_packages_limit_size_swift: -1
+gitea_packages_limit_size_vagrant: -1
+
+gitea_packages_extra_config: ''
+
+gitea_mirror_enabled: true
+gitea_mirror_new_pull_enabled: true
+gitea_mirror_new_push_enabled: true
+gitea_mirror_default_interval: 8h
+gitea_mirror_min_interval: 10m
+
+gitea_mirror_extra_config: ''
+
+gitea_proxy_enabled: false
+
+gitea_proxy_extra_config: ''
+
+gitea_actions_enabled: true
+gitea_actions_default_url: github
+gitea_actions_log_retention_days: 365
+gitea_actions_log_compression: zstd
+gitea_actions_artifact_retention_days: 90
+gitea_actions_zombie_task_timeout: 10m
+gitea_actions_endless_task_timeout: 3h
+gitea_actions_abandoned_job_timeout: 24h
+
+gitea_actions_skip_workflow_strings:
+  - '[skip ci]'
+  - '[ci skip]'
+  - '[no ci]'
+  - '[skip actions]'
+  - '[actions skip]'
+
+gitea_actions_extra_config: ''
+
+gitea_other_show_footer_version: true
+gitea_other_show_footer_template_load_time: true
+gitea_other_show_footer_powered_by: true
+gitea_other_sitemap_enabled: true
+gitea_other_feed_enabled: true
+
+gitea_other_extra_config: ''

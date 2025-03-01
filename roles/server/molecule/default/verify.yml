@@ -1,0 +1,36 @@
+---
+- name: Verify
+  hosts:
+    - subjects
+  tasks:
+    - name: Ensure listening on port 3000
+      ansible.builtin.wait_for:
+        port: 3000
+        delay: 5
+        timeout: 60
+        state: started
+      register: _gitea_listening
+
+    - name: Verify Gitea is listening on port 3000
+      ansible.builtin.assert:
+        that:
+          - _gitea_listening is success
+          - _gitea_listening is not changed
+        fail_msg: Gitea is not listening on port 3000.
+        success_msg: Gitea is listening on port 3000.
+
+    - name: Ensure listening on port 2222
+      ansible.builtin.wait_for:
+        port: 2222
+        delay: 5
+        timeout: 60
+        state: started
+      register: _gitea_ssh_listening
+
+    - name: Verify Gitea is listening on port 2222
+      ansible.builtin.assert:
+        that:
+          - _gitea_ssh_listening is success
+          - _gitea_ssh_listening is not changed
+        fail_msg: Gitea is not listening on port 2222.
+        success_msg: Gitea is listening on port 2222.

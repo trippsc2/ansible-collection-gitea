@@ -1,0 +1,29 @@
+---
+_gitea_supported_os_families:
+  - Debian
+  - Nobara
+  - RedHat
+
+_gitea_firewall_type: "{{ gitea_firewall_type | default(_gitea_default_firewall_type) }}"
+
+_gitea_log_to_console_mode: "{{ ['console'] if gitea_log_to_console else [] }}"
+_gitea_log_to_file_mode: "{{ ['file'] if gitea_log_to_file else [] }}"
+
+_gitea_log_mode: "{{ _gitea_log_to_console_mode + _gitea_log_to_file_mode }}"
+
+_gitea_default_server_ssh_user: "{{ gitea_server_builtin_ssh_server_user if gitea_server_start_ssh_server else gitea_user }}"
+_gitea_default_server_ssh_port: "{{ gitea_server_ssh_listen_port if gitea_server_start_ssh_server else 22 }}"
+_gitea_default_database_connection_max_lifetime: "{{ '3s' if gitea_database_type == 'mysql' else '0' }}"
+_gitea_default_database_port: >-
+  {{ 3306 if gitea_database_type == 'mysql' else 5432 if gitea_database_type == 'postgres' else 1433 }}
+_gitea_default_mailer_smtp_port: >-
+  {{ 25 if gitea_mailer_protocol == 'smtp' else 465 if gitea_mailer_protocol == 'smtps' else 587 }}
+_gitea_default_email_incoming_imap_port: "{{ 993 if gitea_email_incoming_use_tls else 143 }}"
+
+_gitea_server_ssh_user: "{{ gitea_server_ssh_user | default(_gitea_default_server_ssh_user) }}"
+_gitea_server_ssh_port: "{{ gitea_server_ssh_port | default(_gitea_default_server_ssh_port) }}"
+_gitea_database_connection_max_lifetime: >-
+  {{ gitea_database_connection_max_lifetime | default(_gitea_default_database_connection_max_lifetime) }}
+_gitea_database_port: "{{ gitea_database_port | default(_gitea_default_database_port) }}"
+_gitea_mailer_smtp_port: "{{ gitea_mailer_smtp_port | default(_gitea_default_mailer_smtp_port) }}"
+_gitea_email_incoming_imap_port: "{{ gitea_email_incoming_imap_port | default(_gitea_default_email_incoming_imap_port) }}"

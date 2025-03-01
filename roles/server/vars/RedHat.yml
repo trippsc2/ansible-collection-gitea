@@ -1,0 +1,4 @@
+---
+_gitea_default_firewall_type: firewalld
+
+_gitea_sqlite_package: sqlite

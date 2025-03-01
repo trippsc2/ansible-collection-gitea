@@ -1,0 +1,908 @@
+{{ ansible_managed | comment(decoration="; ") }}
+
+APP_NAME = {{ gitea_app_name }}
+RUN_USER = {{ gitea_user }}
+RUN_MODE = prod
+WORK_PATH = {{ gitea_working_directory_path }}
+{{ gitea_extra_config }}
+
+[repository]
+ROOT = {{ gitea_repository_root_path }}
+SCRIPT_TYPE = {{ gitea_repository_script_type }}
+{% if gitea_repository_detected_charsets_order is defined %}
+DETECTED_CHARSETS_ORDER = {{ gitea_repository_detected_charsets_order | join(", ") }}
+{% endif %}
+{% if gitea_repository_ansi_charset is defined %}
+ANSI_CHARSET = {{ gitea_repository_ansi_charset }}
+{% endif %}
+FORCE_PRIVATE = {{ gitea_repository_force_private }}
+DEFAULT_PRIVATE = {{ gitea_repository_default_private }}
+{% if gitea_repository_push_create_user_enabled or gitea_repository_push_create_org_enabled %}
+DEFAULT_PUSH_CREATE_PRIVATE = {{ gitea_repository_default_push_create_private }}
+{% endif %}
+MAX_CREATION_LIMIT = {{ gitea_repository_max_creation_limit }}
+PREFERRED_LICENSES = {{ gitea_repository_preferred_licenses | join(",") }}
+DISABLE_HTTP_GIT = {{ gitea_repository_http_git_enabled | ternary("false", "true") }}
+USE_COMPAT_SSH_URI = {{ gitea_repository_use_compat_ssh_uri | ternary("true", "false") }}
+GO_GET_CLONE_URL_PROTOCOL = {{ gitea_repository_go_get_clone_url_protocol }}
+{% if gitea_repository_access_control_allow_origin is defined %}
+ACCESS_CONTROL_ALLOW_ORIGIN = {{ gitea_repository_access_control_allow_origin }}
+{% endif %}
+ENABLE_PUSH_CREATE_USER = {{ gitea_repository_push_create_user_enabled | ternary("true", "false") }}
+ENABLE_PUSH_CREATE_ORG = {{ gitea_repository_push_create_org_enabled | ternary("true", "false") }}
+DEFAULT_CLOSE_ISSUES_VIA_COMMITS_IN_ANY_BRANCH = {{ gitea_repository_default_close_issues_via_commits_in_any_branch | ternary("true", "false") }}
+{% if gitea_repository_disabled_units is defined %}
+DISABLED_REPO_UNITS = {{ gitea_repository_disabled_units | join(",") }}
+{% endif %}
+DEFAULT_REPO_UNITS = {{ gitea_repository_default_units | join(",") }}
+DEFAULT_FORK_REPO_UNITS = {{ gitea_repository_default_fork_units | join(",") }}
+DEFAULT_MIRROR_REPO_UNITS = {{ gitea_repository_default_mirror_units | join(",") }}
+DEFAULT_TEMPLATE_REPO_UNITS = {{ gitea_repository_default_template_units | join(",") }}
+PREFIX_ARCHIVE_FILES = {{ gitea_repository_prefix_archive_files | ternary("true", "false") }}
+DISABLE_MIGRATIONS = {{ gitea_repository_migrations_enabled | ternary("false", "true") }}
+DISABLE_STARS = {{ gitea_repository_stars_enabled | ternary("false", "true") }}
+DEFAULT_BRANCH = {{ gitea_repository_default_branch }}
+ALLOW_ADOPTION_OF_UNADOPTED_REPOSITORIES = {{ gitea_repository_allow_adoption_of_unadopted | ternary("true", "false") }}
+ALLOW_DELETION_OF_UNADOPTED_REPOSITORIES = {{ gitea_repository_allow_deletion_of_unadopted | ternary("true", "false") }}
+DISABLE_DOWNLOAD_SOURCE_ARCHIVES = {{ gitea_repository_download_source_archives_enabled | ternary("false", "true") }}
+ALLOW_FORK_WITHOUT_MAXIMUM_LIMIT = {{ gitea_repository_allow_fork_without_maximum_limit | ternary("true", "false") }}
+ALLOW_FORK_INTO_SAME_OWNER = {{ gitea_repository_allow_fork_into_same_owner | ternary("true", "false") }}
+{{ gitea_repository_extra_config }}
+
+[repository.editor]
+LINE_WRAP_EXTENSIONS = {{ gitea_repository_editor_line_wrap_extensions | join(",") }}
+PREVIEWABLE_FILE_MODES = {{ gitea_repository_editor_previewable_file_modes | join(",") }}
+{{ gitea_repository_editor_extra_config }}
+
+[repository.pull-request]
+WORK_IN_PROGRESS_PREFIXES = {{ gitea_repository_pull_request_work_in_progress_prefixes | join(",") }}
+CLOSE_KEYWORDS = {{ gitea_repository_pull_request_close_keywords | join(", ") }}
+REOPEN_KEYWORDS = {{ gitea_repository_pull_request_reopen_keywords | join(", ") }}
+DEFAULT_MERGE_STYLE = {{ gitea_repository_pull_request_default_merge_style }}
+{% if gitea_repository_pull_request_populate_squash_comment_with_commit_message %}
+DEFAULT_MERGE_MESSAGE_COMMITS_LIMIT = {{ gitea_repository_pull_request_default_merge_message_commits_limit }}
+{% endif %}
+DEFAULT_MERGE_MESSAGE_ALL_AUTHORS = {{ gitea_repository_pull_request_default_merge_message_all_authors | ternary("true", "false") }}
+DEFAULT_MERGE_MESSAGE_MAX_APPROVERS = {{ gitea_repository_pull_request_default_merge_message_max_approvers }}
+DEFAULT_MERGE_MESSAGE_OFFICIAL_APPROVERS_ONLY = {{ gitea_repository_pull_request_default_merge_message_official_approvers_only | ternary("true", "false") }}
+POPULATE_SQUASH_COMMENT_WITH_COMMIT_MESSAGES = {{ gitea_repository_pull_request_populate_squash_comment_with_commit_message | ternary("true", "false") }}
+ADD_CO_COMMITTER_TRAILERS = {{ gitea_repository_pull_request_add_co_committer_trailers | ternary("true", "false") }}
+TEST_CONFLICTING_PATCHES_WITH_GIT_APPLY = {{ gitea_repository_pull_request_test_conflicting_patches_with_git_apply | ternary("true", "false") }}
+RETARGET_CHILDREN_ON_MERGE = {{ gitea_repository_pull_request_retarget_children_on_merge | ternary("true", "false") }}
+{{ gitea_repository_pull_request_extra_config }}
+
+[repository.issue]
+LOCK_REASONS = {{ gitea_repository_issue_lock_reasons | join(",") }}
+MAX_PINNED = {{ gitea_repository_issue_max_pinned }}
+{{ gitea_repository_issue_extra_config }}
+
+[repository.upload]
+ENABLED = {{ gitea_repository_upload_enabled | ternary("true", "false") }}
+{% if gitea_repository_upload_enabled %}
+TEMP_PATH = {{ gitea_repository_upload_temp_path }}
+{%     if gitea_repository_upload_allowed_types is defined %}
+ALLOWED_TYPES = {{ gitea_repository_upload_allowed_types | join(",") }}
+{%     endif %}
+FILE_MAX_SIZE = {{ gitea_repository_upload_file_max_size }}
+MAX_FILES = {{ gitea_repository_upload_max_files }}
+{% endif %}
+{{ gitea_repository_upload_extra_config }}
+
+[repository.release]
+{% if gitea_repository_release_allowed_types is defined %}
+ALLOWED_TYPES = {{ gitea_repository_release_allowed_types | join(",") }}
+{% endif %}
+DEFAULT_PAGING_NUM = {{ gitea_repository_release_default_paging_number }}
+{{ gitea_repository_release_extra_config }}
+
+{% if gitea_repository_signing_enabled %}
+[repository.signing]
+SIGNING_KEY = {{ gitea_repository_signing_key }}
+{%     if gitea_repository_signing_key != 'none' and gitea_repository_signing_key != 'default' %}
+SIGNING_NAME = {{ gitea_repository_signing_name }}
+SIGNING_EMAIL = {{ gitea_repository_signing_email }}
+{%     endif %}
+{%     if gitea_repository_signing_initial_commit_always %}
+INITIAL_COMMIT = always
+{%     elif gitea_repository_signing_initial_commit_never %}
+INITIAL_COMMIT = never
+{%     else %}
+INITIAL_COMMIT = {{ gitea_repository_signing_initial_commit | join(",") }}
+{%     endif %}
+DEFAULT_TRUST_MODEL = {{ gitea_repository_signing_default_trust_model }}
+{%     if gitea_repository_signing_wiki_always %}
+WIKI = always
+{%     elif gitea_repository_signing_wiki_never %}
+WIKI = never
+{%     else %}
+WIKI = {{ gitea_repository_signing_wiki | join(",") }}
+{%     endif %}
+{%     if gitea_repository_signing_crud_actions_always %}
+CRUD_ACTIONS = always
+{%     elif gitea_repository_signing_crud_actions_never %}
+CRUD_ACTIONS = never
+{%     else %}
+CRUD_ACTIONS = {{ gitea_repository_signing_crud_actions | join(", ") }}
+{%     endif %}
+{%     if gitea_repository_signing_merges_always %}
+MERGES = always
+{%     elif gitea_repository_signing_merges_never %}
+MERGES = never
+{%     else %}
+MERGES = {{ gitea_repository_signing_merges | join(", ") }}
+{%     endif %}
+{% endif %}
+{{ gitea_repository_signing_extra_config }}
+
+[repository.local]
+LOCAL_COPY_PATH = {{ gitea_repository_local_copy_path }}
+{{ gitea_repository_local_extra_config }}
+
+{% if gitea_repository_mimetype_mappings | length > 0 %}
+[repository.mimetype_mapping]
+{%     for key, value in gitea_repository_mimetype_mappings.values() %}
+{{ key }} = {{ value }}
+{%     endfor %}
+{% endif %}
+
+[cors]
+ENABLED = {{ gitea_cors_enabled }}
+{% if gitea_cors_enabled %}
+ALLOW_DOMAIN = {{ gitea_cors_allow_domains | join(",") }}
+METHODS = {{ gitea_cors_methods | join(",") }}
+MAX_AGE = {{ gitea_cors_max_age }}
+ALLOW_CREDENTIALS = {{ gitea_cors_allow_credentials | ternary("true", "false") }}
+HEADERS = {{ gitea_cors_headers | join(",") }}
+X_FRAME_OPTIONS = {{ gitea_cors_x_frame_options }}
+{% endif %}
+{{ gitea_cors_extra_config }}
+
+[ui]
+EXPLORE_PAGING_NUM = {{ gitea_ui_explore_paging_number }}
+ISSUE_PAGING_NUM = {{ gitea_ui_issue_paging_number }}
+MEMBERS_PAGING_NUM = {{ gitea_ui_members_paging_number }}
+FEED_MAX_COMMIT_NUM = {{ gitea_ui_feed_max_commit_number }}
+FEED_PAGING_NUM = {{ gitea_ui_feed_paging_number }}
+SITEMAP_PAGING_NUM = {{ gitea_ui_sitemap_paging_number }}
+GRAPH_MAX_COMMIT_NUM = {{ gitea_ui_graph_max_commit_number }}
+CODE_COMMENT_LINES = {{ gitea_ui_code_comment_lines }}
+DEFAULT_THEME = {{ gitea_ui_default_theme }}
+SHOW_USER_EMAIL = {{ gitea_ui_show_user_email | ternary("true", "false") }}
+{% if gitea_ui_themes is defined %}
+THEMES = {{ gitea_ui_themes | join(",") }}
+{% endif %}
+MAX_DISPLAY_FILE_SIZE = {{ gitea_ui_max_display_file_size }}
+AMBIGUOUS_UNICODE_DETECTION = {{ gitea_ui_ambiguous_unicode_detection | ternary("true", "false") }}
+{% if gitea_ui_reactions is defined %}
+REACTIONS = {{ gitea_ui_reactions | join(",") }}
+{% endif %}
+REACTION_MAX_USER_NUM = {{ gitea_ui_reaction_max_user_number }}
+CUSTOM_EMOJIS = {{ gitea_ui_custom_emojis | join(",") }}
+DEFAULT_SHOW_FULL_NAME = {{ gitea_ui_default_show_full_name | ternary("true", "false") }}
+SEARCH_REPO_DESCRIPTION = {{ gitea_ui_search_repo_description | ternary("true", "false") }}
+ONLY_SHOW_RELEVANT_REPOS = {{ gitea_ui_only_show_relevant_repos | ternary("true", "false") }}
+EXPLORE_PAGING_DEFAULT_SORT = {{ gitea_ui_explore_paging_default_sort }}
+PREFERRED_TIMESTAMP_TENSE = {{ gitea_ui_preferred_timestamp_tense }}
+{{ gitea_ui_extra_config }}
+
+[ui.admin]
+USER_PAGING_NUM = {{ gitea_ui_admin_user_paging_number }}
+REPO_PAGING_NUM = {{ gitea_ui_admin_repo_paging_number }}
+NOTICE_PAGING_NUM = {{ gitea_ui_admin_notice_paging_number }}
+ORG_PAGING_NUM = {{ gitea_ui_admin_org_paging_number }}
+{{ gitea_ui_admin_extra_config }}
+
+[ui.user]
+REPO_PAGING_NUM = {{ gitea_ui_user_repo_paging_number }}
+ORG_PAGING_NUM = {{ gitea_ui_user_org_paging_number }}
+{{ gitea_ui_user_extra_config }}
+
+[ui.notification]
+MIN_TIMEOUT = {{ gitea_ui_notification_min_timeout }}
+MAX_TIMEOUT = {{ gitea_ui_notification_max_timeout }}
+TIMEOUT_STEP = {{ gitea_ui_notification_timeout_step }}
+EVENT_SOURCE_UPDATE_TIME = {{ gitea_ui_notification_event_source_update_time }}
+{{ gitea_ui_notification_extra_config }}
+
+[ui.svg]
+ENABLE_RENDER = {{ gitea_ui_svg_render_enabled | ternary("true", "false") }}
+{{ gitea_ui_svg_extra_config }}
+
+[ui.csv]
+MAX_FILE_SIZE = {{ gitea_ui_csv_max_file_size }}
+MAX_ROWS = {{ gitea_ui_csv_max_rows }}
+{{ gitea_ui_csv_extra_config }}
+
+[markdown]
+ENABLE_HARD_LINE_BREAK_IN_COMMENTS = {{ gitea_markdown_enable_hard_line_break_in_comments | ternary("true", "false") }}
+ENABLE_HARD_LINE_BREAK_IN_DOCUMENTS = {{ gitea_markdown_enable_hard_line_break_in_documents | ternary("true", "false") }}
+{% if gitea_markdown_custom_url_schemes is defined %}
+CUSTOM_URL_SCHEMES = {{ gitea_markdown_custom_url_schemes | join(",") }}
+{% endif %}
+FILE_EXTENSIONS = {{ gitea_markdown_file_extensions | join(",") }}
+ENABLE_MATH = {{ gitea_markdown_math_enabled | ternary("true", "false") }}
+{{ gitea_markdown_extra_config }}
+
+[server]
+PROTOCOL = {{ gitea_server_protocol }}
+USE_PROXY_PROTOCOL = {{ gitea_server_use_proxy_protocol | ternary("true", "false") }}
+{% if gitea_server_use_proxy_protocol %}
+PROXY_PROTOCOL_TLS_BRIDGING = {{ gitea_server_proxy_protocol_tls_bridging | ternary("true", "false") }}
+PROXY_PROTOCOL_HEADER_TIMEOUT = {{ gitea_server_proxy_protocol_header_timeout }}
+PROXY_PROTOCOL_ACCEPT_UNKNOWN = {{ gitea_server_proxy_protocol_accept_unknown | ternary("true", "false") }}
+{% endif %}
+DOMAIN = {{ gitea_server_domain }}
+{% if gitea_server_root_url is defined %}
+ROOT_URL = {{ gitea_server_root_url }}
+{% endif %}
+{% if gitea_server_static_url_prefix is defined %}
+STATIC_URL_PREFIX = {{ gitea_server_static_url_prefix }}
+{% endif %}
+HTTP_ADDR = {{ gitea_server_http_address }}
+HTTP_PORT = {{ gitea_server_http_port }}
+UNIX_SOCKET_PERMISSION = {{ gitea_server_unix_socket_permission }}
+{% if gitea_server_local_root_url is defined %}
+LOCAL_ROOT_URL = {{ gitea_server_local_root_url }}
+{% endif %}
+LOCAL_USE_PROXY_PROTOCOL = {{ gitea_server_local_use_proxy_protocol | ternary("true", "false") }}
+PER_WRITE_TIMEOUT = {{ gitea_server_per_write_timeout }}
+PER_WRITE_PER_KB_TIMEOUT = {{ gitea_server_per_write_per_kb_timeout }}
+DISABLE_SSH = {{ gitea_server_ssh_enabled | ternary("false", "true") }}
+{% if gitea_server_ssh_enabled %}
+START_SSH_SERVER = {{ gitea_server_start_ssh_server | ternary("true", "false") }}
+{%     if gitea_server_start_ssh_server %}
+SSH_SERVER_USE_PROXY_PROTOCOL = {{ gitea_server_ssh_server_use_proxy_protocol | ternary("true", "false") }}
+BUILTIN_SSH_SERVER_USER = {{ gitea_server_builtin_ssh_server_user }}
+SSH_LISTEN_HOST = {{ gitea_server_ssh_listen_host }}
+SSH_LISTEN_PORT = {{ gitea_server_ssh_listen_port }}
+SSH_ROOT_PATH = {{ gitea_server_ssh_root_path }}
+SSH_SERVER_CIPHERS = {{ gitea_server_ssh_ciphers | join(",") }}
+SSH_SERVER_KEY_EXCHANGES = {{ gitea_server_ssh_key_exchanges | join(",") }}
+SSH_SERVER_MACS = {{ gitea_server_ssh_macs | join(",") }}
+SSH_SERVER_HOST_KEYS = {{ gitea_server_ssh_host_keys | join(",") }}
+{%     else %}
+SSH_CREATE_AUTHORIZED_KEYS_FILE = {{ gitea_server_ssh_create_authorized_keys_file | ternary("true", "false") }}
+{%     endif %}
+SSH_USER = {{ _gitea_server_ssh_user }}
+SSH_DOMAIN = {{ gitea_server_ssh_domain }}
+SSH_PORT = {{ _gitea_server_ssh_port }}
+SSH_AUTHORIZED_KEYS_BACKUP = {{ gitea_server_ssh_authorized_keys_backup | ternary("true", "false") }}
+{%     if gitea_server_ssh_trusted_user_ca_keys is defined %}
+SSH_TRUSTED_USER_CA_KEYS = {{ gitea_server_ssh_trusted_user_ca_keys | join(",") }}
+SSH_TRUSTED_USER_CA_KEYS_FILENAME = {{ gitea_server_ssh_trusted_user_ca_keys_path }}
+{%         if gitea_server_ssh_authorized_principals_allow_anything %}
+SSH_AUTHORIZED_PRINCIPALS_ALLOW = anything
+{%         elif gitea_server_ssh_authorized_principals_allow_off %}
+SSH_AUTHORIZED_PRINCIPALS_ALLOW = off
+{%         else %}
+SSH_AUTHORIZED_PRINCIPALS_ALLOW = {{ gitea_server_ssh_authorized_principals_allow | join(", ") }}
+{%         endif %}
+SSH_CREATE_AUTHORIZED_PRINCIPALS_FILE = {{ gitea_server_ssh_create_authorized_principals_file | ternary("true", "false") }}
+{%     endif %}
+SSH_KEY_TEST_PATH = {{ gitea_server_ssh_key_test_path }}
+{%     if gitea_server_ssh_keygen_path is defined %}
+SSH_KEYGEN_PATH = {{ gitea_server_ssh_keygen_path }}
+{%     endif %}
+SSH_EXPOSE_ANONYMOUS = {{ gitea_server_ssh_expose_anonymous | ternary("true", "false") }}
+SSH_PER_WRITE_TIMEOUT = {{ gitea_server_ssh_per_write_timeout }}
+SSH_PER_WRITE_PER_KB_TIMEOUT = {{ gitea_server_ssh_per_write_per_kb_timeout }}
+{% endif %}
+OFFLINE_MODE = {{ gitea_server_offline_mode | ternary("true", "false") }}
+{% if gitea_server_protocol == 'https' %}
+CERT_FILE = {{ gitea_server_cert_file_path }}
+KEY_FILE = {{ gitea_server_key_file_path }}
+REDIRECT_OTHER_PORT = {{ gitea_server_redirect_other_port | ternary("true", "false") }}
+{%     if gitea_server_redirect_other_port %}
+REDIRECTOR_USE_PROXY_PROTOCOL = {{ gitea_server_redirector_use_proxy_protocol | ternary("true", "false") }}
+PORT_TO_REDIRECT = {{ gitea_server_port_to_redirect }}
+{%     endif %}
+SSL_MIN_VERSION = {{ gitea_server_ssl_min_version }}
+{%     if gitea_server_ssl_max_version is defined %}
+SSL_MAX_VERSION = {{ gitea_server_ssl_max_version }}
+{%     endif %}
+SSL_CURVE_PREFERENCES = {{ gitea_server_ssl_curve_preferences | join(",") }}
+SSL_CIPHER_SUITES = {{ gitea_server_ssl_cipher_suites | join(",") }}
+ENABLE_ACME = {{ gitea_server_acme_enabled | ternary("true", "false") }}
+{%     if gitea_server_acme_enabled %}
+{%         if gitea_server_acme_url is defined %}
+ACME_URL = {{ gitea_server_acme_url }}
+{%         endif %}
+ACME_ACCEPTTOS = {{ gitea_server_acme_accept_tos | ternary("true", "false") }}
+ACME_DIRECTORY = {{ gitea_server_acme_directory }}
+{%         if gitea_server_acme_email is defined %}
+ACME_EMAIL = {{ gitea_server_acme_email }}
+{%         endif %}
+{%         if gitea_server_acme_ca_root is defined %}
+ACME_CA_ROOT = {{ gitea_server_acme_ca_root }}
+{%         endif %}
+{%     endif %}
+{% endif %}
+{% if gitea_server_static_root_path is defined %}
+STATIC_ROOT_PATH = {{ gitea_server_static_root_path }}
+{% endif %}
+APP_DATA_PATH = {{ gitea_server_app_data_path }}
+STATIC_CACHE_TIME = {{ gitea_server_static_cache_time }}
+ENABLE_GZIP = {{ gitea_server_gzip_enabled | ternary("true", "false") }}
+ENABLE_PPROF = {{ gitea_server_pprof_enabled | ternary("true", "false") }}
+{% if gitea_server_pprof_enabled %}
+PPROF_DATA_PATH = {{ gitea_server_pprof_data_path }}
+{% endif %}
+{% if gitea_server_landing_page != 'custom' %}
+LANDING_PAGE = {{ gitea_server_landing_page }}
+{% else %}
+LANDING_PAGE = {{ gitea_server_custom_landing_page }}
+{% endif %}
+LFS_START_SERVER = {{ gitea_server_lfs_enabled | ternary("true", "false") }}
+{% if gitea_server_lfs_enabled %}
+LFS_ALLOW_PURE_SSH = {{ gitea_server_lfs_allow_pure_ssh | ternary("true", "false") }}
+LFS_CONTENT_PATH = {{ gitea_server_lfs_content_path }}
+LFS_JWT_SECRET_URI = file:{{ gitea_server_lfs_jwt_secret_path }}
+LFS_HTTP_AUTH_EXPIRY = {{ gitea_server_lfs_http_auth_expiry }}
+LFS_MAX_FILE_SIZE = {{ gitea_server_lfs_max_file_size }}
+LFS_LOCKS_PAGING_NUM = {{ gitea_server_lfs_locks_paging_number }}
+LFS_MAX_BATCH_SIZE = {{ gitea_server_lfs_max_batch_size }}
+ALLOW_GRACEFUL_RESTARTS = {{ gitea_server_allow_graceful_restarts | ternary("true", "false") }}
+GRACEFUL_HAMMER_TIME = {{ gitea_server_graceful_hammer_time }}
+STARTUP_TIMEOUT = {{ gitea_server_startup_timeout }}
+{% endif %}
+{{ gitea_server_extra_config }}
+
+[database]
+DB_TYPE = {{ gitea_database_type }}
+ITERATE_BUFFER_SIZE = {{ gitea_database_iterate_buffer_size }}
+LOG_SQL = {{ gitea_database_log_sql_queries | ternary("true", "false") }}
+DB_RETRIES = {{ gitea_database_retries }}
+DB_RETRY_BACKOFF = {{ gitea_database_retry_backoff }}
+MAX_OPEN_CONNS = {{ gitea_database_max_open_connections }}
+MAX_IDLE_CONNS = {{ gitea_database_max_idle_connections }}
+CONN_MAX_LIFETIME = {{ _gitea_database_connection_max_lifetime }}
+AUTO_MIGRATION = {{ gitea_database_auto_migration | ternary("true", "false") }}
+SLOW_QUERY_THRESHOLD = {{ gitea_database_slow_query_threshold }}
+{% if gitea_database_type == 'sqlite3' %}
+PATH = {{ gitea_database_sqlite_path }}
+SQLITE_TIMEOUT = {{ gitea_database_sqlite_timeout }}
+{%     if gitea_database_sqlite_journal_mode is defined %}
+SQLITE_JOURNAL_MODE = {{ gitea_database_sqlite_journal_mode }}
+{%     endif %}
+{% else %}
+HOST = {{ gitea_database_host }}:{{ _gitea_database_port }}
+NAME = {{ gitea_database_name }}
+USER = {{ gitea_database_user }}
+{%     if gitea_database_password is defined %}
+PASSWD = {{ gitea_database_password }}
+{%     endif %}
+{% endif %}
+{% if gitea_database_type == 'mysql' or gitea_database_type == 'mssql' %}
+CHARSET_COLLATION = {{ gitea_database_charset_collation }}
+{% endif %}
+{% if gitea_database_type == 'mysql' %}
+SSL_MODE = {{ gitea_database_mysql_ssl_mode }}
+{% endif %}
+{% if gitea_database_type == 'postgres' %}
+SSL_MODE = {{ gitea_database_pgsql_ssl_mode }}
+{% endif %}
+{{ gitea_database_extra_config }}
+
+[indexer]
+ISSUE_INDEXER_TYPE = {{ gitea_indexer_issue_type }}
+{% if gitea_indexer_issue_type == 'elasticsearch' or gitea_indexer_issue_type == 'meilisearch' %}
+{%     if gitea_indexer_issue_connection_string is defined %}
+ISSUE_INDEXER_CONN_STR = {{ gitea_indexer_issue_connection_string }}
+{%     endif %}
+ISSUE_INDEXER_NAME = {{ gitea_indexer_issue_name }}
+{% endif %}
+{% if gitea_indexer_issue_type == 'elasticsearch' or gitea_indexer_issue_type == 'bleve' %}
+ISSUE_INDEXER_PATH = {{ gitea_indexer_issue_path }}
+{% endif %}
+REPO_INDEXER_ENABLED = {{ gitea_indexer_repo_enabled | ternary("true", "false") }}
+{% if gitea_indexer_repo_enabled %}
+REPO_INDEXER_REPO_TYPES = {{ gitea_indexer_repo_unit_types | join(",") }}
+REPO_INDEXER_TYPE = {{ gitea_indexer_repo_type }}
+REPO_INDEXER_PATH = {{ gitea_indexer_repo_path }}
+{%     if gitea_indexer_repo_include is defined %}
+REPO_INDEXER_INCLUDE = {{ gitea_indexer_repo_include | join(",") }}
+{%     endif %}
+{%     if gitea_indexer_repo_exclude is defined %}
+REPO_INDEXER_EXCLUDE = {{ gitea_indexer_repo_exclude | join(",") }}
+{%     endif %}
+REPO_INDEXER_EXCLUDE_VENDORED = {{ gitea_indexer_repo_exclude_vendored | ternary("true", "false") }}
+{%     if gitea_indexer_repo_type == 'elasticsearch' %}
+{%         if gitea_indexer_repo_connection_string is defined %}
+REPO_INDEXER_CONN_STR = {{ gitea_indexer_repo_connection_string }}
+{%         endif %}
+REPO_INDEXER_NAME = {{ gitea_indexer_repo_name }}
+{%     endif %}
+{% endif %}
+MAX_FILE_SIZE = {{ gitea_indexer_max_file_size }}
+STARTUP_TIMEOUT = {{ gitea_indexer_startup_timeout }}
+{{ gitea_indexer_extra_config }}
+
+[security]
+INSTALL_LOCK = true
+SECRET_KEY_URL = file:{{ gitea_security_secret_key_path }}
+LOGIN_REMEMBER_DAYS = {{ gitea_security_login_remember_days }}
+COOKIE_REMEMBER_NAME = {{ gitea_security_cookie_remember_name }}
+{% if gitea_service_reverse_proxy_authentication_enabled or gitea_service_reverse_proxy_api_authentication_enabled %}
+REVERSE_PROXY_AUTHENTICATION_USER = {{ gitea_security_reverse_proxy_authentication_user }}
+REVERSE_PROXY_AUTHENTICATION_EMAIL = {{ gitea_security_reverse_proxy_authentication_email }}
+REVERSE_PROXY_AUTHENTICATION_FULL_NAME = {{ gitea_security_reverse_proxy_authentication_full_name }}
+{% endif %}
+REVERSE_PROXY_LIMIT = {{ gitea_security_reverse_proxy_limit }}
+REVERSE_PROXY_TRUSTED_PROXIES = {{ gitea_security_reverse_proxy_trusted_proxies | join(",") }}
+DISABLE_GIT_HOOKS = {{ gitea_security_git_hooks_enabled | ternary("false", "true") }}
+DISABLE_WEBHOOKS = {{ gitea_security_webhooks_enabled | ternary("false", "true") }}
+ONLY_ALLOW_PUSH_IF_GITEA_ENVIRONMENT_SET = {{ gitea_security_only_allow_push_if_gitea_environment_set | ternary("true", "false") }}
+IMPORT_LOCAL_PATHS = {{ gitea_security_import_local_paths | ternary("true", "false") }}
+INTERNAL_TOKEN_URI = file:{{ gitea_security_internal_token_path }}
+{% if gitea_security_password_hash_algorithm != 'custom' %}
+PASSWORD_HASH_ALGO = {{ gitea_security_password_hash_algorithm }}
+{% else %}
+PASSWORD_HASH_ALGO = {{ gitea_security_password_hash_algorithm_custom }}
+{% endif %}
+CSRF_COOKIE_HTTP_ONLY = {{ gitea_security_csrf_cookie_http_only | ternary("true", "false") }}
+MIN_PASSWORD_LENGTH = {{ gitea_security_min_password_length }}
+{% if gitea_security_password_complexity_off %}
+PASSWORD_COMPLEXITY = off
+{% else %}
+PASSWORD_COMPLEXITY = {{ gitea_security_password_complexity | join(",") }}
+{% endif %}
+PASSWORD_CHECK_PWN = {{ gitea_security_password_check_pwn | ternary("true", "false") }}
+SUCCESSFUL_TOKENS_CACHE_SIZE = {{ gitea_security_successful_tokens_cache_size }}
+DISABLE_QUERY_AUTH_TOKEN = {{ gitea_security_query_auth_token_enabled | ternary("false", "true") }}
+{{ gitea_security_extra_config }}
+
+[camo]
+ENABLED = {{ gitea_camo_enabled | ternary("true", "false") }}
+{% if gitea_camo_enabled %}
+SERVER_URL = {{ gitea_camo_server_url }}
+HMAC_KEY = {{ gitea_camo_hmac_key }}
+ALWAYS = {{ gitea_camo_always | ternary("true", "false") }}
+{{ gitea_camo_extra_config }}
+{% endif %}
+
+[openid]
+ENABLE_OPENID_SIGNIN = {{ gitea_openid_signin_enabled | ternary("true", "false") }}
+{% if gitea_openid_signin_enabled %}
+ENABLE_OPENID_SIGNUP = {{ gitea_openid_signup_enabled | ternary("true", "false") }}
+{%     if gitea_openid_whitelisted_uris is defined %}
+WHITELISTED_URIS = {{ gitea_openid_whitelisted_uris | join(",") }}
+{%     endif %}
+{%     if gitea_openid_blacklisted_uris is defined %}
+BLACKLISTED_URIS = {{ gitea_openid_blacklisted_uris | join(",") }}
+{%     endif %}
+{% else %}
+ENABLE_OPENID_SIGNUP = false
+{% endif %}
+{{ gitea_openid_extra_config }}
+
+[oauth2_client]
+{% if gitea_oauth2_client_openid_connect_scopes is defined %}
+OPENID_CONNECT_SCOPES = {{ gitea_oauth2_client_openid_connect_scopes | join(",") }}
+{% endif %}
+USERNAME = {{ gitea_oauth2_client_username }}
+UPDATE_AVATAR = {{ gitea_oauth2_client_update_avatar | ternary("true", "false") }}
+ACCOUNT_LINKING = {{ gitea_oauth2_client_account_linking }}
+{% if gitea_service_registration_enabled %}
+REGISTER_EMAIL_CONFIRM = {{ gitea_oauth2_client_confirm_register_email | ternary("true", "false") }}
+ENABLE_AUTO_REGISTRATION = {{ gitea_oauth2_client_auto_registration_enabled | ternary("true", "false") }}
+{% endif %}
+{{ gitea_oauth2_client_extra_config }}
+
+[service]
+RESET_PASSWD_CODE_LIVE_MINUTES = {{ gitea_service_reset_password_code_live_minutes }}
+REQUIRE_SIGNIN_VIEW = {{ gitea_service_require_signin_view | ternary("true", "false") }}
+ENABLE_NOTIFY_MAIL = {{ gitea_service_notify_mail_enabled | ternary("true", "false") }}
+ENABLE_BASIC_AUTHENTICATION = {{ gitea_service_basic_authentication_enabled | ternary("true", "false") }}
+ENABLE_PASSWORD_SIGNIN_FORM = {{ gitea_service_password_signin_form_enabled | ternary("true", "false") }}
+ENABLE_REVERSE_PROXY_AUTHENTICATION = {{ gitea_service_reverse_proxy_authentication_enabled | ternary("true", "false") }}
+ENABLE_REVERSE_PROXY_API_AUTHENTICATION = {{ gitea_service_reverse_proxy_api_authentication_enabled | ternary("true", "false") }}
+DEFAULT_KEEP_EMAIL_PRIVATE = {{ gitea_service_default_keep_email_private | ternary("true", "false") }}
+DEFAULT_ALLOW_CREATE_ORGANIZATION = {{ gitea_service_default_allow_create_organization | ternary("true", "false") }}
+DEFAULT_USER_IS_RESTRICTED = {{ gitea_service_default_user_is_restricted | ternary("true", "false") }}
+DEFAULT_ENABLE_DEPENDENCIES = {{ gitea_service_default_enable_dependencies | ternary("true", "false") }}
+ALLOW_CROSS_REPOSITORY_DEPENDENCIES = {{ gitea_service_allow_cross_repository_dependencies | ternary("true", "false") }}
+{% if gitea_service_user_location_map_url is defined %}
+USER_LOCATION_MAP_URL = {{ gitea_service_user_location_map_url }}
+{% endif %}
+ENABLE_USER_HEATMAP = {{ gitea_service_user_heatmap_enabled | ternary("true", "false") }}
+{% if gitea_service_email_domain_allow_list is defined %}
+EMAIL_DOMAIN_ALLOWLIST = {{ gitea_service_email_domain_allow_list | join(",") }}
+{% endif %}
+{% if gitea_service_email_domain_block_list is defined %}
+EMAIL_DOMAIN_BLOCKLIST = {{ gitea_service_email_domain_block_list | join(",") }}
+{% endif %}
+SHOW_MILESTONES_DASHBOARD_PAGE = {{ gitea_service_show_milestones_dashboard_page | ternary("true", "false") }}
+AUTO_WATCH_NEW_REPOS = {{ gitea_service_auto_watch_new_repos | ternary("true", "false") }}
+AUTO_WATCH_ON_CHANGES = {{ gitea_service_auto_watch_on_changes | ternary("true", "false") }}
+DEFAULT_USER_VISIBILITY = {{ gitea_service_default_user_visibility }}
+ALLOWED_USER_VISIBILITY_MODES = {{ gitea_service_allowed_user_visibility_modes | join(",") }}
+DEFAULT_ORG_VISIBILITY = {{ gitea_service_default_org_visibility }}
+DEFAULT_ORG_MEMBER_VISIBLE = {{ gitea_service_default_org_member_visible | ternary("true", "false") }}
+NO_REPLY_ADDRESS = {{ gitea_service_no_reply_address }}
+USER_DELETE_WITH_COMMENTS_MAX_TIME = {{ gitea_service_user_delete_with_comments_max_time }}
+VALID_SITE_URL_SCHEMES = {{ gitea_service_valid_site_url_schemes | join(",") }}
+DISABLE_REGISTRATION = {{ gitea_service_registration_enabled | ternary("false", "true") }}
+{% if gitea_service_registration_enabled %}
+SHOW_REGISTRATION_BUTTON = {{ gitea_service_show_registration_button | ternary("true", "false") }}
+REGISTER_EMAIL_CONFIRM = {{ gitea_service_register_email_confirm | ternary("true", "false") }}
+{%     if not gitea_service_register_email_confirm %}
+REGISTER_MANUAL_CONFIRM = {{ gitea_service_register_manual_confirm | ternary("true", "false") }}
+{%     endif %}
+ALLOW_ONLY_INTERNAL_REGISTRATION = {{ (gitea_service_allow_internal_registration and not gitea_service_allow_external_registration) | ternary("true", "false") }}
+ALLOW_ONLY_EXTERNAL_REGISTRATION = {{ (gitea_service_allow_external_registration and not gitea_service_allow_internal_registration) | ternary("true", "false") }}
+{%     if gitea_service_allow_external_registration %}
+REQUIRE_EXTERNAL_REGISTRATION_PASSWORD = {{ gitea_service_require_external_registration_password | ternary("true", "false") }}
+{%     endif %}
+ENABLE_REVERSE_PROXY_AUTO_REGISTRATION = {{ gitea_service_reverse_proxy_auto_registration_enabled | ternary("true", "false") }}
+{%     if gitea_service_reverse_proxy_auto_registration_enabled %}
+ENABLE_REVERSE_PROXY_EMAIL = {{ gitea_service_reverse_proxy_email_enabled | ternary("true", "false") }}
+ENABLE_REVERSE_PROXY_FULL_NAME = {{ gitea_service_reverse_proxy_full_name_enabled | ternary("true", "false") }}
+{%     endif %}
+{% endif %}
+ENABLE_CAPTCHA = {{ gitea_service_captcha_enabled | ternary("true", "false") }}
+{% if gitea_service_captcha_enabled %}
+REQUIRE_CAPTCHA_FOR_LOGIN = {{ gitea_service_require_captcha_for_login | ternary("true", "false") }}
+REQUIRE_EXTERNAL_REGISTRATION_CAPTCHA = {{ gitea_service_require_external_registration_captcha | ternary("true", "false") }}
+CAPTCHA_TYPE = {{ gitea_service_captcha_type }}
+{%     if gitea_service_captcha_type == 'recaptcha' %}
+RECAPTCHA_SECRET = {{ gitea_service_recaptcha_secret }}
+RECAPTCHA_SITEKEY = {{ gitea_service_recaptcha_site_key }}
+RECAPTCHA_URL = {{ gitea_service_recaptcha_url }}
+{%     elif gitea_service_captcha_type == 'hcaptcha' %}
+HCAPTCHA_SECRET = {{ gitea_service_hcaptcha_secret }}
+HCAPTCHA_SITEKEY = {{ gitea_service_hcaptcha_site_key }}
+{%     elif gitea_service_captcha_type == 'mcaptcha' %}
+MCAPTCHA_SECRET = {{ gitea_service_mcaptcha_secret }}
+MCAPTCHA_SITEKEY = {{ gitea_service_mcaptcha_site_key }}
+MCAPTCHA_URL = {{ gitea_service_mcaptcha_url }}
+{%     elif gitea_service_captcha_type == 'cfturnstile' %}
+CF_TURNSTILE_SECRET = {{ gitea_service_cf_turnstile_secret }}
+CF_TURNSTILE_SITEKEY = {{ gitea_service_cf_turnstile_site_key }}
+{%     endif %}
+{% endif %}
+ENABLE_TIMETRACKING = {{ gitea_service_timetracking_enabled | ternary("true", "false") }}
+{% if gitea_service_timetracking_enabled %}
+DEFAULT_ENABLE_TIMETRACKING = {{ gitea_service_default_enable_timetracking | ternary("true", "false") }}
+DEFAULT_ALLOW_ONLY_CONTRIBUTORS_TO_TRACK_TIME = {{ gitea_service_default_allow_only_contributors_to_track_time | ternary("true", "false") }}
+{% endif %}
+{{ gitea_service_extra_config }}
+
+[service.explore]
+REQUIRE_SIGNIN_VIEW = {{ gitea_service_explore_require_signin_view | ternary("true", "false") }}
+DISABLE_USERS_PAGE = {{ gitea_service_explore_users_page_enabled | ternary("false", "true") }}
+DISABLE_ORGANIZATIONS_PAGE = {{ gitea_service_explore_organizations_page_enabled | ternary("false", "true") }}
+DISABLE_CODE_PAGE = {{ gitea_service_explore_code_page_enabled | ternary("false", "true") }}
+{{ gitea_service_explore_extra_config }}
+
+[ssh.minimum_key_sizes]
+{% if gitea_ssh_ed25519_enabled %}
+ED25519 = {{ gitea_ssh_minimum_key_sizes_ed25519 }}
+{% else %}
+ED25519 = -1
+{% endif %}
+{% if gitea_ssh_ecdsa_enabled %}
+ECDSA = {{ gitea_ssh_minimum_key_sizes_ecdsa }}
+{% else %}
+ECDSA = -1
+{% endif %}
+{% if gitea_ssh_rsa_enabled %}
+RSA = {{ gitea_ssh_minimum_key_sizes_rsa }}
+{% else %}
+RSA = -1
+{% endif %}
+{% if gitea_ssh_dsa_enabled %}
+DSA = {{ gitea_ssh_minimum_key_sizes_dsa }}
+{% else %}
+DSA = -1
+{% endif %}
+{{ gitea_ssh_minimum_key_sizes_extra_config }}
+
+[webhook]
+QUEUE_LENGTH = {{ gitea_webhook_queue_length }}
+DELIVER_TIMEOUT = {{ gitea_webhook_deliver_timeout }}
+ALLOWED_HOST_LIST = {{ gitea_webhook_allowed_host_list | join(",") }}
+SKIP_TLS_VERIFY = {{ gitea_webhook_skip_tls_verify | ternary("true", "false") }}
+PAGING_NUM = {{ gitea_webhook_paging_number }}
+{% if gitea_webhook_proxy_url is defined %}
+PROXY_URL = {{ gitea_webhook_proxy_url }}
+{% endif %}
+{% if gitea_webhook_proxy_hosts is defined %}
+PROXY_HOSTS = {{ gitea_webhook_proxy_hosts | join(",") }}
+{% endif %}
+{{ gitea_webhook_extra_config }}
+
+[mailer]
+ENABLED = {{ gitea_mailer_enabled | ternary("true", "false") }}
+{% if gitea_mailer_enabled %}
+{%     if gitea_mailer_from is defined %}
+FROM = {{ gitea_mailer_from }}
+{%     endif %}
+FROM_DISPLAY_NAME_FORMAT = {{ gitea_mailer_from_display_name_format }}
+{%     if gitea_mailer_subject_prefix is defined %}
+SUBJECT_PREFIX = {{ gitea_mailer_subject_prefix }}
+{%     endif %}
+SEND_AS_PLAIN_TEXT = {{ gitea_mailer_send_as_plain_text | ternary("true", "false") }}
+PROTOCOL = {{ gitea_mailer_protocol }}
+{%     if gitea_mailer_protocol == 'smtp' or
+          gitea_mailer_protocol == 'smtps' or
+          gitea_mailer_protocol == 'smtp+starttls' or
+          gitea_mailer_protocol == 'smtp+unix' %}
+SMTP_ADDR = {{ gitea_mailer_smtp_address }}
+{%         if gitea_mailer_user is defined %}
+USER = {{ gitea_mailer_user }}
+{%         endif %}
+{%         if gitea_mailer_password is defined %}
+PASSWD = {{ gitea_mailer_password }}
+{%         endif %}
+ENABLE_HELO = {{ gitea_mailer_enable_helo | ternary("true", "false") }}
+{%         if gitea_mailer_helo_hostname is defined %}
+HELO_HOSTNAME = {{ gitea_mailer_helo_hostname }}
+{%         endif %}
+{%         if gitea_mailer_envelope_from is defined %}
+ENVELOPE_FROM = {{ gitea_mailer_envelope_from }}
+{%         endif %}
+{%     endif %}
+{%     if gitea_mailer_protocol == 'smtp' or
+          gitea_mailer_protocol == 'smtps' or
+          gitea_mailer_protocol == 'smtp+starttls' %}
+SMTP_PORT = {{ _gitea_mailer_smtp_port }}
+{%     endif %}
+{%     if gitea_mailer_protocol == 'sendmail' %}
+{%         if gitea_mailer_sendmail_path is defined %}
+SENDMAIL_PATH = {{ gitea_mailer_sendmail_path }}
+{%         endif %}
+{%         if gitea_mailer_sendmail_args is defined %}
+SENDMAIL_ARGS = {{ gitea_mailer_sendmail_args }}
+{%         endif %}
+SENDMAIL_TIMEOUT = {{ gitea_mailer_sendmail_timeout }}
+SENDMAIL_CONVERT_CRLF = {{ gitea_mailer_sendmail_convert_crlf | ternary("true", "false") }}
+{%     endif %}
+USE_CLIENT_CERT = {{ gitea_mailer_use_client_certificate | ternary("true", "false") }}
+{%     if gitea_mailer_use_client_certificate %}
+CLIENT_CERT_PATH = {{ gitea_mailer_client_certificate_file_path }}
+CLIENT_KEY_FILE = {{ gitea_mailer_client_key_file_path }}
+{%     endif %}
+{% endif %}
+{{ gitea_mailer_extra_config }}
+
+[email.incoming]
+ENABLED = {{ gitea_email_incoming_enabled | ternary("true", "false") }}
+{% if gitea_email_incoming_enabled %}
+{%     if gitea_email_incoming_reply_to_address is defined %}
+REPLY_TO_ADDRESS = {{ gitea_email_incoming_reply_to_address }}
+{%     endif %}
+HOST = {{ gitea_email_incoming_imap_host }}
+PORT = {{ _gitea_email_incoming_imap_port }}
+{%     if gitea_email_incoming_username is defined %}
+USERNAME = {{ gitea_email_incoming_username }}
+{%     endif %}
+{%     if gitea_email_incoming_password is defined %}
+PASSWORD = {{ gitea_email_incoming_password }}
+{%     endif %}
+USE_TLS = {{ gitea_email_incoming_use_tls | ternary("true", "false") }}
+{%     if gitea_email_incoming_use_tls %}
+SKIP_TLS_VERIFY = {{ gitea_email_incoming_skip_tls_verify | ternary("true", "false") }}
+{%     endif %}
+MAILBOX = {{ gitea_email_incoming_mailbox }}
+DELETE_HANDLED_MESSAGE = {{ gitea_email_incoming_delete_handled_message | ternary("true", "false") }}
+MAXIMUM_MESSAGE_SIZE = {{ gitea_email_incoming_maximum_message_size }}
+{% endif %}
+{{ gitea_email_incoming_extra_config }}
+
+[cache]
+INTERVAL = {{ gitea_cache_interval }}
+ITEM_TTL = {{ gitea_cache_item_ttl }}
+ADAPTER = {{ gitea_cache_adapter }}
+{% if gitea_cache_adapter == 'redis' or
+      gitea_cache_adapter == 'twoqueue' or
+      gitea_cache_adapter == 'memcache' %}
+HOST = {{ gitea_cache_host }}
+{% endif %}
+{{ gitea_cache_extra_config }}
+
+[cache.last_commit]
+ITEM_TTL = {{ gitea_cache_last_commit_item_ttl }}
+COMMITS_COUNT = {{ gitea_cache_last_commit_commits_count }}
+{{ gitea_cache_last_commit_extra_config }}
+
+[session]
+PROVIDER = {{ gitea_session_provider }}
+{% if gitea_session_provider == 'couchbase' or
+      gitea_session_provider == 'file' or
+      gitea_session_provider == 'memcache' or
+      gitea_session_provider == 'mysql' or
+      gitea_session_provider == 'postgres' or
+      gitea_session_provider == 'redis' %}
+PROVIDER_CONFIG = {{ gitea_session_provider_config }}
+{% endif %}
+COOKIE_SECURE = {{ gitea_session_cookie_secure | ternary("true", "false") }}
+COOKIE_NAME = {{ gitea_session_cookie_name }}
+GC_INTERVAL_TIME = {{ gitea_session_gc_interval_time }}
+SESSION_LIFE_TIME = {{ gitea_session_lifetime }}
+{% if gitea_session_domain is defined %}
+DOMAIN = {{ gitea_session_domain }}
+{% endif %}
+SAME_SITE = {{ gitea_session_same_site }}
+{{ gitea_session_extra_config }}
+
+[picture]
+{% if gitea_picture_gravatar_source == 'custom' %}
+GRAVATAR_SOURCE = {{ gitea_picture_gravatar_source_custom }}
+{% else %}
+GRAVATAR_SOURCE = {{ gitea_picture_gravatar_source }}
+{% endif %}
+{{ gitea_picture_extra_config }}
+
+[log]
+ROOT_PATH = {{ gitea_log_root_path }}
+MODE = {{ _gitea_log_mode | join(",") }}
+LEVEL = {{ gitea_log_level }}
+STACKTRACE_LEVEL = {{ gitea_log_stacktrace_level }}
+ENABLE_SSH_LOG = {{ gitea_log_ssh_enabled | ternary("true", "false") }}
+{{ gitea_log_extra_config }}
+
+[git]
+{% if gitea_git_path is defined %}
+PATH = {{ gitea_git_path }}
+{% endif %}
+HOME_PATH = {{ gitea_git_home_path }}
+DISABLE_DIFF_HIGHLIGHT = {{ gitea_git_diff_highlight_enabled | ternary("false", "true") }}
+MAX_GIT_DIFF_LINES = {{ gitea_git_max_diff_lines }}
+MAX_GIT_DIFF_LINE_CHARACTERS = {{ gitea_git_max_diff_line_characters }}
+MAX_GIT_DIFF_FILES = {{ gitea_git_max_diff_files }}
+COMMITS_RANGE_SIZE = {{ gitea_git_commits_range_size }}
+BRANCHES_RANGE_SIZE = {{ gitea_git_branches_range_size }}
+{% if gitea_git_gc_args is defined %}
+GC_ARGS = {{ gitea_git_gc_args }}
+{% endif %}
+ENABLE_AUTO_GIT_WIRE_PROTOCOL = {{ gitea_git_auto_git_wire_protocol_enabled | ternary("true", "false") }}
+PULL_REQUEST_PUSH_MESSAGE = {{ gitea_git_pull_request_push_message }}
+VERBOSE_PUSH = {{ gitea_git_verbose_push | ternary("true", "false") }}
+VERBOSE_PUSH_DELAY = {{ gitea_git_verbose_push_delay }}
+LARGE_OBJECT_THRESHOLD = {{ gitea_git_large_object_threshold }}
+DISABLE_CORE_PROTECT_NTFS = {{ gitea_git_core_protect_ntfs_enabled | ternary("false", "true") }}
+DISABLE_PARTIAL_CLONE = {{ gitea_git_partial_clone_enabled | ternary("false", "true") }}
+{{ gitea_git_extra_config }}
+
+[git.timeout]
+DEFAULT = {{ gitea_git_timeout_default }}
+MIGRATE = {{ gitea_git_timeout_migrate }}
+MIRROR = {{ gitea_git_timeout_mirror }}
+CLONE = {{ gitea_git_timeout_clone }}
+PULL = {{ gitea_git_timeout_pull }}
+GC = {{ gitea_git_timeout_gc }}
+{{ gitea_git_timeout_extra_config }}
+
+[metrics]
+ENABLED = {{ gitea_metrics_enabled | ternary("true", "false") }}
+{% if gitea_metrics_enabled %}
+ENABLED_ISSUE_BY_LABEL = {{ gitea_metrics_enabled_issue_by_label | ternary("true", "false") }}
+ENABLED_ISSUE_BY_REPOSITORY = {{ gitea_metrics_enabled_issue_by_repository | ternary("true", "false") }}
+{%     if gitea_metrics_token is defined %}
+TOKEN = {{ gitea_metrics_token }}
+{%     endif %}
+{% endif %}
+{{ gitea_metrics_extra_config }}
+
+[api]
+ENABLE_SWAGGER = {{ gitea_api_swagger_enabled | ternary("true", "false") }}
+{% if gitea_api_swagger_enabled %}
+MAX_RESPONSE_ITEMS = {{ gitea_api_max_response_items }}
+DEFAULT_PAGING_NUM = {{ gitea_api_default_paging_number }}
+DEFAULT_GIT_TREES_PER_PAGE = {{ gitea_api_default_git_trees_per_page }}
+DEFAULT_MAX_BLOB_SIZE = {{ gitea_api_default_max_blob_size }}
+{% endif %}
+{{ gitea_api_extra_config }}
+
+[oauth2]
+ENABLED = {{ gitea_oauth2_enabled | ternary("true", "false") }}
+{% if gitea_oauth2_enabled %}
+ACCESS_TOKEN_EXPIRATION_TIME = {{ gitea_oauth2_access_token_expiration_time }}
+REFRESH_TOKEN_EXPIRATION_TIME = {{ gitea_oauth2_refresh_token_expiration_time }}
+INVALIDATE_REFRESH_TOKENS = {{ gitea_oauth2_invalidate_refresh_tokens | ternary("true", "false") }}
+JWT_SIGNING_ALGORITHM = {{ gitea_oauth2_jwt_signing_algorithm }}
+JWT_SECRET_URI = file:{{ gitea_oauth2_jwt_secret_path }}
+JWT_SIGNING_PRIVATE_KEY_FILE = {{ gitea_oauth2_jwt_signing_private_key_file_path }}
+MAX_TOKEN_LENGTH = {{ gitea_oauth2_max_token_length }}
+DEFAULT_APPLICATIONS = {{ gitea_oauth2_default_applications | join(",") }}
+{% endif %}
+{{ gitea_oauth2_extra_config }}
+
+[time]
+DEFAULT_UI_LOCATION = {{ gitea_time_default_ui_location }}
+{{ gitea_time_extra_config }}
+
+[migrations]
+MAX_ATTEMPTS = {{ gitea_migrations_max_attempts }}
+RETRY_BACKOFF = {{ gitea_migrations_retry_backoff }}
+{% if gitea_migrations_allowed_domains is defined %}
+ALLOWED_DOMAINS = {{ gitea_migrations_allowed_domains | join(",") }}
+{% endif %}
+{% if gitea_migrations_blocked_domains is defined %}
+BLOCKED_DOMAINS = {{ gitea_migrations_blocked_domains | join(",") }}
+{% endif %}
+ALLOW_LOCALNETWORKS = {{ gitea_migrations_allow_local_networks | ternary("true", "false") }}
+SKIP_TLS_VERIFY = {{ gitea_migrations_skip_tls_verify | ternary("true", "false") }}
+{{ gitea_migrations_extra_config }}
+
+[federation]
+ENABLED = {{ gitea_federation_enabled | ternary("true", "false") }}
+{% if gitea_federation_enabled %}
+SHARE_USER_STATISTICS = {{ gitea_federation_share_user_statistics | ternary("true", "false") }}
+MAX_SIZE = {{ gitea_federation_max_size }}
+ALGORITHMS = {{ gitea_federation_algorithms | join(",") }}
+DIGEST_ALGORITHM = {{ gitea_federation_digest_algorithm }}
+GET_HEADERS = {{ gitea_federation_get_headers | join(",") }}
+POST_HEADERS = {{ gitea_federation_post_headers | join(",") }}
+{% endif %}
+{{ gitea_federation_extra_config }}
+
+[packages]
+ENABLED = {{ gitea_packages_enabled | ternary("true", "false") }}
+{% if gitea_packages_enabled %}
+CHUNKED_UPLOAD_PATH = {{ gitea_packages_chunked_upload_path }}
+LIMIT_TOTAL_OWNER_COUNT = {{ gitea_packages_limit_total_owner_count }}
+LIMIT_TOTAL_OWNER_SIZE = {{ gitea_packages_limit_total_owner_size }}
+LIMIT_SIZE_ALPINE = {{ gitea_packages_limit_size_alpine }}
+LIMIT_SIZE_CARGO = {{ gitea_packages_limit_size_cargo }}
+LIMIT_SIZE_CHEF = {{ gitea_packages_limit_size_chef }}
+LIMIT_SIZE_COMPOSER = {{ gitea_packages_limit_size_composer }}
+LIMIT_SIZE_CONAN = {{ gitea_packages_limit_size_conan }}
+LIMIT_SIZE_CONDA = {{ gitea_packages_limit_size_conda }}
+LIMIT_SIZE_CONTAINER = {{ gitea_packages_limit_size_container }}
+LIMIT_SIZE_CRAN = {{ gitea_packages_limit_size_cran }}
+LIMIT_SIZE_DEBIAN = {{ gitea_packages_limit_size_debian }}
+LIMIT_SIZE_GENERIC = {{ gitea_packages_limit_size_generic }}
+LIMIT_SIZE_GO = {{ gitea_packages_limit_size_go }}
+LIMIT_SIZE_HELM = {{ gitea_packages_limit_size_helm }}
+LIMIT_SIZE_MAVEN = {{ gitea_packages_limit_size_maven }}
+LIMIT_SIZE_NPM = {{ gitea_packages_limit_size_npm }}
+LIMIT_SIZE_NUGET = {{ gitea_packages_limit_size_nuget }}
+LIMIT_SIZE_PUB = {{ gitea_packages_limit_size_pub }}
+LIMIT_SIZE_PYPI = {{ gitea_packages_limit_size_pypi }}
+LIMIT_SIZE_RPM = {{ gitea_packages_limit_size_rpm }}
+LIMIT_SIZE_RUBYGEMS = {{ gitea_packages_limit_size_rubygems }}
+LIMIT_SIZE_SWIFT = {{ gitea_packages_limit_size_swift }}
+LIMIT_SIZE_VAGRANT = {{ gitea_packages_limit_size_vagrant }}
+{% endif %}
+{{ gitea_packages_extra_config }}
+
+[mirror]
+ENABLED = {{ gitea_mirror_enabled | ternary("true", "false") }}
+{% if gitea_mirror_enabled %}
+DISABLE_NEW_PULL = {{ gitea_mirror_new_pull_enabled | ternary("false", "true") }}
+DISABLE_NEW_PUSH = {{ gitea_mirror_new_push_enabled | ternary("false", "true") }}
+DEFAULT_INTERVAL = {{ gitea_mirror_default_interval }}
+MIN_INTERVAL = {{ gitea_mirror_min_interval }}
+{% endif %}
+{{ gitea_mirror_extra_config }}
+
+[proxy]
+PROXY_ENABLED = {{ gitea_proxy_enabled | ternary("true", "false") }}
+{% if gitea_proxy_enabled %}
+PROXY_URL = {{ gitea_proxy_url }}
+PROXY_HOSTS = {{ gitea_proxy_hosts | join(",") }}
+{% endif %}
+{{ gitea_proxy_extra_config }}
+
+[actions]
+ENABLED = {{ gitea_actions_enabled | ternary("true", "false") }}
+{% if gitea_actions_enabled %}
+DEFAULT_ACTIONS_URL = {{ gitea_actions_default_url }}
+LOG_RETENTION_DAYS = {{ gitea_actions_log_retention_days }}
+LOG_COMPRESSION = {{ gitea_actions_log_compression }}
+ARTIFACT_RETENTION_DAYS = {{ gitea_actions_artifact_retention_days }}
+ZOMBIE_TASK_TIMEOUT = {{ gitea_actions_zombie_task_timeout }}
+ENDLESS_TASK_TIMEOUT = {{ gitea_actions_endless_task_timeout }}
+ABANDONED_JOB_TIMEOUT = {{ gitea_actions_abandoned_job_timeout }}
+SKIP_WORKFLOW_STRINGS = {{ gitea_actions_skip_workflow_strings | join(",") }}
+{% endif %}
+{{ gitea_actions_extra_config }}
+
+[other]
+SHOW_FOOTER_VERSION = {{ gitea_other_show_footer_version | ternary("true", "false") }}
+SHOW_FOOTER_TEMPLATE_LOAD_TIME = {{ gitea_other_show_footer_template_load_time | ternary("true", "false") }}
+SHOW_FOOTER_POWERED_BY = {{ gitea_other_show_footer_powered_by | ternary("true", "false") }}
+ENABLE_SITEMAP = {{ gitea_other_sitemap_enabled | ternary("true", "false") }}
+ENABLE_FEED = {{ gitea_other_feed_enabled | ternary("true", "false") }}
+{{ gitea_other_extra_config }}

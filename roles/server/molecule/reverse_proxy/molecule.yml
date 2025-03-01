@@ -1,0 +1,37 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: libvirt
+  cachier: machine
+  parallel: true
+platforms:
+  - name: linux
+    box: jtarpley/${MOLECULE_BOX:-rocky9_cis}
+    memory: 2048
+    cpus: 2
+    provider_options:
+      default_prefix: gitea_server_reverse_proxy_
+    groups:
+      - subjects
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      subjects:
+        ssl_certificate_directory: >-
+          {{ '/etc/pki/tls/certs' if ansible_os_family == 'RedHat' else '/etc/ssl/certs' }}
+        ssl_certificate_key_directory: >-
+          {{ '/etc/pki/tls/private' if ansible_os_family == 'RedHat' else '/etc/ssl/private' }}
+        nginxproxy_ssl_stapling: false
+        nginxproxy_ssl_stapling_verify: false
+        nginxproxy_server_name: localhost
+        nginxproxy_proxy_address: http://127.0.0.1:3000
+        nginxproxy_server_certificate_path: "{{ ssl_certificate_directory }}/nginx.crt"
+        nginxproxy_server_certificate_key_path: "{{ ssl_certificate_key_directory }}/nginx.key"
+        gitea_server_http_address: '127.0.0.1'
+        gitea_server_start_ssh_server: true
+verifier:
+  name: ansible

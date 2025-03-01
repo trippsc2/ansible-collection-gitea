@@ -1,0 +1,110 @@
+---
+- name: Install SQLite package
+  when:
+    - gitea_database_type == 'sqlite3'
+  become: true
+  ansible.builtin.package:
+    name:
+      - "{{ _gitea_sqlite_package }}"
+    state: present
+
+- name: Install Git
+  become: true
+  ansible.builtin.package:
+    name:
+      - git
+    state: present
+
+- name: Set Gitea version to latest
+  when:
+    - gitea_version is not defined
+  block:
+    - name: Get latest version
+      ansible.builtin.uri:
+        url: https://dl.gitea.io/gitea/version.json
+        return_content: true
+      register: _gitea_latest
+
+    - name: Set Gitea version
+      ansible.builtin.set_fact:
+        gitea_version: "{{ _gitea_latest.json.latest.version }}"
+
+- name: Configure Gitea service
+  become: true
+  ansible.builtin.template:
+    src: gitea.service.j2
+    dest: /etc/systemd/system/gitea.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - _gitea_systemd_reload
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Set Gitea version path
+  ansible.builtin.set_fact:
+    _gitea_version_path: "{{ gitea_install_path }}-{{ gitea_version }}"
+
+- name: Check if Gitea version is already installed
+  ansible.builtin.stat:
+    path: "{{ _gitea_version_path }}"
+  register: _gitea_version
+
+- name: Install Gitea
+  when:
+    - not _gitea_version.stat.exists
+  become: true
+  ansible.builtin.uri:
+    url: "https://dl.gitea.io/gitea/{{ gitea_version }}/gitea-{{ gitea_version }}-linux-amd64"
+    dest: "{{ _gitea_version_path }}"
+    owner: root
+    group: root
+    mode: '0755'
+  notify:
+    - _gitea_stop_gitea
+    - _gitea_update_symlink
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Configure Gitea
+  become: true
+  ansible.builtin.template:
+    src: app.ini.j2
+    dest: "{{ gitea_config_file_path }}"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_group }}"
+    mode: '0640'
+  notify:
+    - _gitea_restart_gitea
+
+- name: Create secrets
+  ansible.builtin.include_tasks: secrets.yml
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Ensure Gitea is running and enabled
+  become: true
+  ansible.builtin.systemd_service:
+    name: gitea.service
+    state: started
+    enabled: true
+
+- name: Find old Gitea versions
+  ansible.builtin.find:
+    paths:
+      - "{{ gitea_install_path | dirname }}"
+    patterns:
+      - "gitea-*"
+    file_type: directory
+  register: _gitea_versions
+
+- name: Remove old Gitea versions
+  become: true
+  loop: "{{ _gitea_versions.files | rejectattr('path', 'equalto', _gitea_version_path) }}"
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent

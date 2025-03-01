@@ -1,0 +1,22 @@
+[Unit]
+Description=Gitea
+After=syslog.target
+After=network.target
+After=mysql.service
+Wants=mysql.service
+
+[Service]
+RestartSec=2s
+Type=simple
+User=git
+Group=git
+WorkingDirectory={{ gitea_working_directory_path }}/
+ExecStart={{ gitea_install_path }} web --config {{ gitea_config_file_path }}
+Restart=always
+Environment=USER={{ gitea_user }} HOME={{ gitea_working_directory_path }} GITEA_WORK_DIR={{ gitea_working_directory_path }}
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+PrivateUsers=false
+
+[Install]
+WantedBy=multi-user.target

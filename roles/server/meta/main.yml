@@ -1,0 +1,31 @@
+---
+galaxy_info:
+  author: Jim Tarpley (@trippsc2)
+  namespace: trippsc2
+  role_name: server
+  description: This role installs and configures Gitea server.
+
+  license: MIT
+
+  min_ansible_version: '2.16'
+
+  platforms:
+    - name: Debian
+      versions:
+        - bullseye
+        - bookworm
+    - name: EL
+      versions:
+        - '8'
+        - '9'
+    - name: Ubuntu
+      versions:
+        - focal
+        - jammy
+        - noble
+
+collections:
+  - ansible.posix
+  - community.general
+
+dependencies: []

@@ -1,0 +1,29 @@
+---
+- name: Gather OS facts
+  when:
+    - ansible_distribution is not defined or
+      ansible_os_family is not defined
+  ansible.builtin.setup:
+    gather_subset:
+      - '!all'
+      - '!min'
+      - distribution
+      - os_family
+
+- name: Include OS family variables
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Set default firewall type (Ubuntu)
+  when:
+    - ansible_distribution == 'Ubuntu'
+  ansible.builtin.set_fact:
+    _gitea_default_firewall_type: ufw
+
+- name: Validate Gitea version
+  when:
+    - gitea_version is defined
+  ansible.builtin.assert:
+    that:
+      - gitea_version | match('^\d{1,2}\.\d{1,2}\.\d{1,2}$')
+    fail_msg: Gitea version must be in the format 'x.y.z' where x, y, and z are integers.
+    success_msg: Gitea version is valid.

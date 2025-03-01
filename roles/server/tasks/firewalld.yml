@@ -1,0 +1,33 @@
+---
+- name: Configure firewalld HTTP port
+  when:
+    - gitea_server_http_address != '127.0.0.1'
+  become: true
+  ansible.posix.firewalld:
+    port: "{{ gitea_server_http_port }}/tcp"
+    permanent: true
+    state: enabled
+    immediate: true
+
+- name: Configure firewalld redirect port
+  when:
+    - gitea_server_http_address != '127.0.0.1'
+    - gitea_server_protocol == 'https'
+    - gitea_server_redirect_other_port
+  become: true
+  ansible.posix.firewalld:
+    port: "{{ gitea_server_port_to_redirect }}/tcp"
+    permanent: true
+    state: enabled
+    immediate: true
+
+- name: Configure firewalld SSH port
+  when:
+    - gitea_server_ssh_enabled
+    - _gitea_server_ssh_port != 22
+  become: true
+  ansible.posix.firewalld:
+    port: "{{ _gitea_server_ssh_port }}/tcp"
+    permanent: true
+    state: enabled
+    immediate: true
