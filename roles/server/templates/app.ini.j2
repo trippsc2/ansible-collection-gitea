@@ -333,10 +333,10 @@ LANDING_PAGE = {{ gitea_server_landing_page }}
 LANDING_PAGE = {{ gitea_server_custom_landing_page }}
 {% endif %}
 LFS_START_SERVER = {{ gitea_server_lfs_enabled | ternary("true", "false") }}
+LFS_JWT_SECRET_URI = file:{{ gitea_server_lfs_jwt_secret_path }}
 {% if gitea_server_lfs_enabled %}
 LFS_ALLOW_PURE_SSH = {{ gitea_server_lfs_allow_pure_ssh | ternary("true", "false") }}
 LFS_CONTENT_PATH = {{ gitea_server_lfs_content_path }}
-LFS_JWT_SECRET_URI = file:{{ gitea_server_lfs_jwt_secret_path }}
 LFS_HTTP_AUTH_EXPIRY = {{ gitea_server_lfs_http_auth_expiry }}
 LFS_MAX_FILE_SIZE = {{ gitea_server_lfs_max_file_size }}
 LFS_LOCKS_PAGING_NUM = {{ gitea_server_lfs_locks_paging_number }}
@@ -796,12 +796,12 @@ DEFAULT_MAX_BLOB_SIZE = {{ gitea_api_default_max_blob_size }}
 
 [oauth2]
 ENABLED = {{ gitea_oauth2_enabled | ternary("true", "false") }}
+JWT_SECRET_URI = file:{{ gitea_oauth2_jwt_secret_path }}
 {% if gitea_oauth2_enabled %}
 ACCESS_TOKEN_EXPIRATION_TIME = {{ gitea_oauth2_access_token_expiration_time }}
 REFRESH_TOKEN_EXPIRATION_TIME = {{ gitea_oauth2_refresh_token_expiration_time }}
 INVALIDATE_REFRESH_TOKENS = {{ gitea_oauth2_invalidate_refresh_tokens | ternary("true", "false") }}
 JWT_SIGNING_ALGORITHM = {{ gitea_oauth2_jwt_signing_algorithm }}
-JWT_SECRET_URI = file:{{ gitea_oauth2_jwt_secret_path }}
 JWT_SIGNING_PRIVATE_KEY_FILE = {{ gitea_oauth2_jwt_signing_private_key_file_path }}
 MAX_TOKEN_LENGTH = {{ gitea_oauth2_max_token_length }}
 DEFAULT_APPLICATIONS = {{ gitea_oauth2_default_applications | join(",") }}
