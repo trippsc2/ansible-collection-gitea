@@ -1,7 +1,7 @@
 <!-- BEGIN_ANSIBLE_DOCS -->
 
 # Ansible Role: trippsc2.gitea.server
-Version: 1.0.1
+Version: 1.0.2
 
 This role installs and configures Gitea server.
 
@@ -357,7 +357,7 @@ This role installs and configures Gitea server.
 | gitea_service_user_delete_with_comments_max_time | <p>The amount of time a user must wait before their comments are retained after deletion.</p><p>If set to `0`, there is no time limit.</p><p>Reference: https://docs.gitea.com/administration/config-cheat-sheet#service-service</p> | str | no |  | 0 |
 | gitea_service_valid_site_url_schemes | <p>A list of valid site URL schemes.</p><p>Reference: https://docs.gitea.com/administration/config-cheat-sheet#service-service</p> | list of 'str' | no |  | ['http', 'https'] |
 | gitea_service_registration_enabled | <p>Whether or not to allow registration.</p><p>Reference: https://docs.gitea.com/administration/config-cheat-sheet#service-service</p> | bool | no |  | True |
-| gitea_show_registration_button | <p>Whether or not to show the registration button.</p><p>If *gitea_service_registration_enabled* is set to `false`, this is ignored.</p><p>Reference: https://docs.gitea.com/administration/config-cheat-sheet#service-service</p> | bool | no |  | True |
+| gitea_service_show_registration_button | <p>Whether or not to show the registration button.</p><p>If *gitea_service_registration_enabled* is set to `false`, this is ignored.</p><p>Reference: https://docs.gitea.com/administration/config-cheat-sheet#service-service</p> | bool | no |  | True |
 | gitea_service_register_email_confirm | <p>Whether or not to require email confirmation for registration.</p><p>If *gitea_service_registration_enabled* is set to `false`, this is ignored.</p><p>Reference: https://docs.gitea.com/administration/config-cheat-sheet#service-service</p> | bool | no |  | False |
 | gitea_service_register_manual_confirm | <p>Whether or not to require manual confirmation for registration.</p><p>This is mutually exclusive with *gitea_register_email_confirm*.</p><p>If *gitea_service_registration_enabled* is set to `false` or *gitea_register_email_confirm* is set to `true`, this is ignored.</p><p>Reference: https://docs.gitea.com/administration/config-cheat-sheet#service-service</p> | bool | no |  | False |
 | gitea_service_active_code_live_minutes | <p>The time limit to confirm an account in minutes.</p><p>If *gitea_service_registration_enabled* is set to `false`, this is ignored.</p><p>If *gitea_service_register_email_confirm* is set to `false`, *gitea_service_register_manual_confirm* is set to `false`, and *gitea_oauth2_client_register_email_confirm* is set to `false`, this is ignored.</p><p>Reference: https://docs.gitea.com/administration/config-cheat-sheet#service-service</p> | int | no |  | 180 |

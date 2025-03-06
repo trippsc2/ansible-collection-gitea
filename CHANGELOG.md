@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] - 2025-03-06
+
+### Role - server
+
+- Fixed typo in argument spec.
+
 ## [1.0.1] - 2025-03-03
 
 ### Role - server

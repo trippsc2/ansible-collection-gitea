@@ -2835,7 +2835,7 @@ argument_specs:
         description:
           - Whether or not to allow registration.
           - 'Reference: https://docs.gitea.com/administration/config-cheat-sheet#service-service'
-      gitea_show_registration_button:
+      gitea_service_show_registration_button:
         type: bool
         required: false
         default: true
