@@ -1,9 +1,4 @@
 ---
-_gitea_supported_os_families:
-  - Debian
-  - Nobara
-  - RedHat
-
 _gitea_firewall_type: "{{ gitea_firewall_type | default(_gitea_default_firewall_type) }}"
 
 _gitea_log_to_console_mode: "{{ ['console'] if gitea_log_to_console else [] }}"

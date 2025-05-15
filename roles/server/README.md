@@ -1,7 +1,7 @@
 <!-- BEGIN_ANSIBLE_DOCS -->
 
 # Ansible Role: trippsc2.gitea.server
-Version: 1.0.2
+Version: 1.0.3
 
 This role installs and configures Gitea server.
 

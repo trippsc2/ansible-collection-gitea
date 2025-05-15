@@ -1,7 +1,7 @@
 ---
 _gitea_os_is_supported: true
-_gitea_os_is_tested: false
+_gitea_os_is_tested: true
 
 _gitea_default_firewall_type: firewalld
 
-_gitea_sqlite_package: sqlite3
+_gitea_sqlite_package: sqlite

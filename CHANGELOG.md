@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2025-05-15
+
+### Role - server
+
+- Changed OS validation.
+
 ## [1.0.2] - 2025-03-06
 
 ### Role - server
