@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Collection
 
 - Changed repository URL to use GitHub Organization.
+- Corrected missing or extra dependencies.
 
 ## [1.0.4] - 2025-05-15
 

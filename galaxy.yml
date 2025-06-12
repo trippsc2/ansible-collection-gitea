@@ -15,7 +15,7 @@ tags:
   - tools
 
 dependencies:
-  ansible.posix: ">=1.0.0"
+  ansible.posix: ">=1.0.1"
   community.general: ">=1.0.0"
 
 repository: https://github.com/trippsoft/ansible-collection-gitea.git

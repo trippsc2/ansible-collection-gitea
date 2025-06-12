@@ -1,6 +1,6 @@
 ---
 _gitea_os_is_supported: true
-_gitea_os_is_tested: true
+_gitea_os_is_tested: false
 
 _gitea_default_firewall_type: ufw
 
